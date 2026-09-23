@@ -1,0 +1,13 @@
+{
+  "$schema": "https://edge-functions.deno.dev/schemas/config.json",
+  "name": "cpgiraneza-health-functions",
+  "compilerOptions": {
+    "lib": ["deno.window", "esnext"],
+    "strict": true
+  },
+  "fmt": {
+    "useTabs": false,
+    "indentWidth": 2,
+    "lineWidth": 140
+  }
+}

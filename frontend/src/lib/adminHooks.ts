@@ -178,14 +178,14 @@ export async function updateEnrollmentStatus(id: string, status: string, student
   if (!supabase) return
   const { error } = await supabase.from('enrollments').update({ status, updated_at: new Date().toISOString() }).eq('id', id)
   if (error) throw error
-  // Notify student
+  // Notify student (best-effort: a notification failure must not fail the status update)
   const { error: notificationError } = await supabase.from('notifications').insert({
     user_id: studentId,
     title: 'Enrollment Update',
     message: `Your enrollment status has been updated to ${status}.`,
     type: 'ENROLLMENT',
   })
-  if (notificationError) throw notificationError
+  if (notificationError) console.error('[admin] enrollment notification failed (non-fatal):', notificationError)
   await logAudit('UPDATE_STATUS', 'enrollments', id, { status })
 }
 
@@ -477,4 +477,114 @@ export async function fetchAuditLogs(): Promise<AuditLog[]> {
     .limit(500)
   if (error) throw error
   return data ?? []
+}
+
+// ── Admission Applications (see backend/admin_upgrade.sql, PART 2) ─────────
+export interface AdmissionDocument {
+  name?: string
+  path?: string
+  type?: string
+  size?: number
+}
+
+export interface AdmissionApplication {
+  id: string
+  reference: string
+  user_id: string | null
+  full_name: string
+  email: string
+  phone: string | null
+  date_of_birth: string | null
+  sex: string | null
+  nationality: string | null
+  residence: string | null
+  address: string | null
+  education_level: string | null
+  institution: string | null
+  graduation_year: string | null
+  languages: string | null
+  personal_statement: string | null
+  first_choice_id: string | null
+  first_choice_title: string | null
+  second_choice_id: string | null
+  second_choice_title: string | null
+  documents: AdmissionDocument[]
+  status: 'DRAFT' | 'SUBMITTED' | 'UNDER_REVIEW' | 'ADDITIONAL_INFO_REQUIRED' | 'ACCEPTED' | 'REJECTED'
+  status_note: string | null
+  submitted_at: string
+  updated_at: string
+}
+
+export async function fetchAdmissionApplications(): Promise<AdmissionApplication[]> {
+  if (!supabase) return []
+  const { data, error } = await supabase
+    .from('admission_applications')
+    .select('*')
+    .order('submitted_at', { ascending: false })
+  if (error) throw error
+  return (data ?? []) as AdmissionApplication[]
+}
+
+/**
+ * Moves an application through the admissions workflow. When the applicant has
+ * an account, they also receive an in-app notification, so the decision is
+ * visible on their dashboard as well as on the status page.
+ */
+export async function updateAdmissionApplicationStatus(
+  application: Pick<AdmissionApplication, 'id' | 'reference' | 'user_id' | 'full_name'>,
+  status: AdmissionApplication['status'],
+  statusNote: string
+) {
+  if (!supabase) return
+  const { error } = await supabase
+    .from('admission_applications')
+    .update({ status, status_note: statusNote || null })
+    .eq('id', application.id)
+  if (error) throw error
+  if (application.user_id) {
+    const titles: Record<string, string> = {
+      UNDER_REVIEW: 'Your application is under review',
+      ADDITIONAL_INFO_REQUIRED: 'Additional information required',
+      ACCEPTED: 'Application accepted',
+      REJECTED: 'Application decision',
+      SUBMITTED: 'Application received',
+      DRAFT: 'Application draft',
+    }
+    await supabase.from('notifications').insert({
+      user_id: application.user_id,
+      title: titles[status] ?? 'Application update',
+      message: `Application ${application.reference} is now: ${status.replaceAll('_', ' ').toLowerCase()}.${statusNote ? ` Note: ${statusNote}` : ''}`,
+      type: 'ADMISSION',
+    })
+  }
+  await logAudit('UPDATE_STATUS', 'admission_applications', application.id, {
+    reference: application.reference,
+    status,
+    note: statusNote || undefined,
+  })
+}
+
+export async function deleteAdmissionApplication(application: Pick<AdmissionApplication, 'id' | 'reference' | 'full_name'>) {
+  if (!supabase) return
+  const { error } = await supabase.from('admission_applications').delete().eq('id', application.id)
+  if (error) throw error
+  await logAudit('DELETE', 'admission_applications', application.id, {
+    reference: application.reference,
+    applicant: application.full_name,
+  })
+}
+
+// ── Student archive (soft-delete) & protected removal ──────────────────────
+export async function updateStudentArchive(id: string, archived: boolean, name: string) {
+  if (!supabase) return
+  const { error } = await supabase.from('profiles').update({ is_archived: archived }).eq('id', id)
+  if (error) throw error
+  await logAudit(archived ? 'ARCHIVE_STUDENT' : 'RESTORE_STUDENT', 'profiles', id, { name })
+}
+
+export async function deleteStudentProfile(id: string, name: string) {
+  if (!supabase) return
+  const { error } = await supabase.from('profiles').delete().eq('id', id)
+  if (error) throw error
+  await logAudit('DELETE_STUDENT', 'profiles', id, { name })
 }

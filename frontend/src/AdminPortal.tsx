@@ -6,11 +6,11 @@ import {
   Handshake, Bell, Settings, ScrollText, LogOut, Menu, X,
   Search, ChevronDown, CheckCircle2, AlertTriangle, Info,
   Plus, Pencil, Trash2, Eye, EyeOff, Star, StarOff,
-  ArrowRight, RefreshCw, Shield, Home, Phone, Building2,
-  UserCheck, UserX, Clock, CheckCheck, XCircle, Ban,
-  HeartPulse, ChevronRight
+  RefreshCw, Shield, Home,
+  UserCheck, Clock, CheckCheck, XCircle, Ban,
+  HeartPulse, ChevronRight, Archive, ArchiveRestore, FolderOpen, Globe
 } from 'lucide-react'
-import { supabase, getCurrentProfile, isAdminRole, logAudit } from './lib/supabase'
+import { supabase, getCurrentProfile, isAdminRole, logAudit, getErrorMessage } from './lib/supabase'
 import type { Profile } from './lib/supabase'
 import {
   useAdminData, fetchDashStats, fetchUsers, fetchCourses,
@@ -30,13 +30,15 @@ import {
   updateContactMessageStatus, deleteContactMessage,
   updatePartnershipStatus, deletePartnershipRequest,
   createNotification, markNotificationRead, deleteNotification,
-  upsertSiteSetting,
-  fetchDashStats as _fetchDashStats
+  upsertSiteSetting, updateStudentArchive, deleteStudentProfile
 } from './lib/adminHooks'
 import type { DashStats } from './lib/adminHooks'
 import './admin.css'
 import FileUploader from './components/FileUploader'
+import { PasswordField } from './components/PasswordField'
 import { createPrivateFileUrl, getPublicFileUrl, moveStoredFile, type UploadedFile } from './lib/storage'
+import { AdminApplications, AdminDocuments, AdminWebsiteContent } from './AdminExtras'
+import { BRAND_DEFAULTS, useSiteContent } from './lib/siteContent'
 
 // ── Toast ──────────────────────────────────────────────────────────────────
 type ToastType = 'success' | 'error' | 'info'
@@ -136,11 +138,11 @@ function PasswordChangePage({ onDone }: { onDone: () => void }) {
         <form onSubmit={submit} style={{ display: 'grid', gap: 14 }}>
           <div className="admin-field">
             <label>Current Password</label>
-            <input type="password" value={cur} onChange={e => setCur(e.target.value)} required placeholder="Current password" />
+            <PasswordField value={cur} onChange={setCur} required placeholder="Current password" label="Current password" autoComplete="current-password" />
           </div>
           <div className="admin-field">
             <label>New Password</label>
-            <input type="password" value={next} onChange={e => setNext(e.target.value)} required placeholder="New password (min 8 chars)" />
+            <PasswordField value={next} onChange={setNext} required placeholder="New password (min 8 chars)" label="New password" autoComplete="new-password" />
             {next && (
               <div>
                 <div className="pw-strength" style={{ width: `${strength * 25}%`, background: strengthColor }} />
@@ -150,7 +152,7 @@ function PasswordChangePage({ onDone }: { onDone: () => void }) {
           </div>
           <div className="admin-field">
             <label>Confirm New Password</label>
-            <input type="password" value={conf} onChange={e => setConf(e.target.value)} required placeholder="Confirm new password" />
+            <PasswordField value={conf} onChange={setConf} required placeholder="Confirm new password" label="Confirm new password" autoComplete="new-password" />
           </div>
           {err && <p style={{ color: '#ef4444', fontSize: 12, margin: 0, background: 'rgba(239,68,68,.1)', padding: '8px 12px', borderRadius: 6 }}>{err}</p>}
           <button className="admin-btn admin-btn-primary" type="submit" disabled={loading} style={{ marginTop: 4, height: 44, fontSize: 14 }}>
@@ -168,11 +170,14 @@ function PasswordChangePage({ onDone }: { onDone: () => void }) {
 // ── Sidebar nav items ──────────────────────────────────────────────────────
 const NAV_ITEMS = [
   { key: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, section: 'OVERVIEW' },
-  { key: 'users', label: 'Users', icon: Users, section: 'PEOPLE' },
-  { key: 'courses', label: 'Courses', icon: BookOpen, section: 'LEARNING' },
+  { key: 'users', label: 'Students', icon: Users, section: 'PEOPLE' },
+  { key: 'applications', label: 'Applications', icon: ClipboardList, section: 'PEOPLE' },
+  { key: 'documents', label: 'Documents', icon: FolderOpen, section: 'PEOPLE' },
+  { key: 'courses', label: 'Programmes', icon: BookOpen, section: 'LEARNING' },
   { key: 'schedules', label: 'Schedules', icon: Calendar, section: 'LEARNING' },
   { key: 'enrollments', label: 'Enrollments', icon: ClipboardList, section: 'LEARNING' },
   { key: 'certificates', label: 'Certificates', icon: Award, section: 'LEARNING' },
+  { key: 'website-content', label: 'Website Content', icon: Globe, section: 'CONTENT' },
   { key: 'news', label: 'News', icon: Newspaper, section: 'CONTENT' },
   { key: 'gallery', label: 'Gallery', icon: Image, section: 'CONTENT' },
   { key: 'careers', label: 'Careers', icon: Briefcase, section: 'CONTENT' },
@@ -190,10 +195,11 @@ const NAV_ITEMS = [
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, string> = {
     APPROVED: 'badge-green', ACTIVE: 'badge-green', VALID: 'badge-green', PUBLISHED: 'badge-green',
-    OPEN: 'badge-green', NEW: 'badge-cyan', READ: 'badge-blue', PENDING: 'badge-amber',
-    WAITLISTED: 'badge-amber', REVIEWING: 'badge-amber', REJECTED: 'badge-red',
-    CANCELLED: 'badge-red', REVOKED: 'badge-red', CLOSED: 'badge-red',
-    COMPLETED: 'badge-purple', INACTIVE: 'badge-gray', DRAFT: 'badge-gray',
+    ACCEPTED: 'badge-green', OPEN: 'badge-green', NEW: 'badge-cyan', READ: 'badge-blue',
+    SUBMITTED: 'badge-blue', UNDER_REVIEW: 'badge-cyan', PENDING: 'badge-amber',
+    WAITLISTED: 'badge-amber', REVIEWING: 'badge-amber', ADDITIONAL_INFO_REQUIRED: 'badge-amber',
+    REJECTED: 'badge-red', CANCELLED: 'badge-red', REVOKED: 'badge-red', CLOSED: 'badge-red',
+    COMPLETED: 'badge-purple', INACTIVE: 'badge-gray', DRAFT: 'badge-gray', ARCHIVED: 'badge-gray',
   }
   return <span className={`admin-badge ${map[status] ?? 'badge-gray'}`}>{status}</span>
 }
@@ -358,15 +364,20 @@ function AdminDashboard({ onNav }: { onNav: (k: string) => void }) {
 }
 
 // ── Users Section ──────────────────────────────────────────────────────────
-function AdminUsers({ toast }: { toast: (m: string, t?: ToastType) => void }) {
+function AdminUsers({ toast, onViewApplications }: { toast: (m: string, t?: ToastType) => void; onViewApplications: (query: string) => void }) {
   const { data: users, loading, error, reload } = useAdminData(fetchUsers)
   const [q, setQ] = useState('')
+  const [showArchived, setShowArchived] = useState(false)
   const [editing, setEditing] = useState<Profile | null>(null)
   const [confirm, setConfirm] = useState<{ msg: string; fn: () => void } | null>(null)
 
-  const filtered = users.filter(u =>
-    `${u.full_name} ${u.email} ${u.diploma ?? ''} ${u.identification_number ?? ''} ${u.residence ?? ''}`.toLowerCase().includes(q.toLowerCase())
-  )
+  const isArchived = (u: Profile) => (u as { is_archived?: boolean }).is_archived === true
+  const archivedCount = users.filter(isArchived).length
+  const filtered = users
+    .filter(u => isArchived(u) === showArchived)
+    .filter(u =>
+      `${u.full_name} ${u.email} ${u.diploma ?? ''} ${u.identification_number ?? ''} ${u.residence ?? ''}`.toLowerCase().includes(q.toLowerCase())
+    )
 
   async function saveEdit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -390,24 +401,28 @@ function AdminUsers({ toast }: { toast: (m: string, t?: ToastType) => void }) {
       setEditing(null)
       reload()
     } catch (err: unknown) {
-      toast(err instanceof Error ? err.message : 'Update failed', 'error')
+      console.error('[admin] user update failed:', err)
+      toast(getErrorMessage(err, 'Update failed'), 'error')
     }
   }
 
   return (
     <div>
       <div className="admin-page-header">
-        <div><h1>Users</h1><p>Manage registered accounts, requests and roles</p></div>
+        <div><h1>Students</h1><p>Manage students, applicants, account requests and roles</p></div>
+        <button className="admin-btn admin-btn-ghost" onClick={() => setShowArchived(!showArchived)}>
+          {showArchived ? <UserCheck size={14} /> : <Archive size={14} />} {showArchived ? 'Show active students' : `Show archived (${archivedCount})`}
+        </button>
       </div>
       <div className="admin-card">
         <div className="admin-card-header">
           <div className="admin-filter-bar">
             <div className="admin-filter-search">
               <Search size={14} />
-              <input placeholder="Search users…" value={q} onChange={e => setQ(e.target.value)} />
+              <input placeholder="Search students…" value={q} onChange={e => setQ(e.target.value)} />
             </div>
           </div>
-          <span style={{ color: '#3a6070', fontSize: 12 }}>{filtered.length} users</span>
+          <span style={{ color: '#3a6070', fontSize: 12 }}>{filtered.length} {showArchived ? 'archived' : 'students'}</span>
         </div>
         {loading ? <div className="admin-loading"><div className="admin-spinner" /></div> : error ? <div className="admin-empty"><p>Could not load users: {error}</p><button className="admin-btn admin-btn-ghost" onClick={reload}>Retry</button></div> : (
           <div className="admin-table-wrap">
@@ -432,10 +447,15 @@ function AdminUsers({ toast }: { toast: (m: string, t?: ToastType) => void }) {
                     <td><StatusBadge status={u.role} /></td>
                     <td>{fmtDate(u.created_at)}</td>
                     <td>
-                      <div style={{ display: 'flex', gap: 6 }}>
+                      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                         <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setEditing(u)}>
                           <Pencil size={12} /> Edit
                         </button>
+                        {u.role === 'STUDENT' && (
+                          <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => onViewApplications(u.email)}>
+                            <ClipboardList size={12} /> Applications
+                          </button>
+                        )}
                         {u.role !== 'ADMIN' && (
                           <button className="admin-btn admin-btn-success admin-btn-sm" onClick={() => setConfirm({
                             msg: `Promote ${u.full_name} to ADMIN?`,
@@ -456,6 +476,38 @@ function AdminUsers({ toast }: { toast: (m: string, t?: ToastType) => void }) {
                         })}>
                           <XCircle size={12} /> Reject
                         </button>
+                        {u.role === 'STUDENT' && (
+                          <>
+                            <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setConfirm({
+                              msg: isArchived(u)
+                                ? `Restore ${u.full_name} to the active student list?`
+                                : `Archive ${u.full_name}? The account and its records are kept safe — archived students are hidden from the active list and can be restored at any time.`,
+                              fn: async () => {
+                                try {
+                                  await updateStudentArchive(u.id, !isArchived(u), u.full_name)
+                                  toast(isArchived(u) ? 'Student restored' : 'Student archived')
+                                  reload()
+                                } catch (err: unknown) { toast(err instanceof Error ? err.message : 'Action failed', 'error') }
+                                setConfirm(null)
+                              }
+                            })}>
+                              {isArchived(u) ? <ArchiveRestore size={12} /> : <Archive size={12} />} {isArchived(u) ? 'Restore' : 'Archive'}
+                            </button>
+                            <button className="admin-btn admin-btn-danger admin-btn-sm" onClick={() => setConfirm({
+                              msg: `Permanently delete ${u.full_name}? This removes the student's profile and can affect their enrolments and other linked records. This cannot be undone. If you only need to take them out of the active list, archive the student instead.`,
+                              fn: async () => {
+                                try {
+                                  await deleteStudentProfile(u.id, u.full_name)
+                                  toast('Student deleted')
+                                  reload()
+                                } catch (err: unknown) { toast(err instanceof Error ? err.message : 'Delete failed', 'error') }
+                                setConfirm(null)
+                              }
+                            })}>
+                              <Trash2 size={12} /> Delete
+                            </button>
+                          </>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -1775,10 +1827,12 @@ export default function Admin() {
   const [authChecked, setAuthChecked] = useState(false)
   const [showPwChange, setShowPwChange] = useState(false)
   const [activeSection, setActiveSection] = useState('dashboard')
+  const [applicationsQuery, setApplicationsQuery] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [globalSearch, setGlobalSearch] = useState('')
   const [unreadCount, setUnreadCount] = useState(0)
   const { toasts, show: showToast } = useToast()
+  const brand = useSiteContent('brand', BRAND_DEFAULTS)
 
   useEffect(() => {
     if (!supabase) { navigate('/login', { replace: true }); return }
@@ -1823,11 +1877,14 @@ export default function Admin() {
 
   const sections: Record<string, React.ReactNode> = {
     dashboard: <AdminDashboard onNav={navTo} />,
-    users: <AdminUsers toast={showToast} />,
+    users: <AdminUsers toast={showToast} onViewApplications={query => { setApplicationsQuery(query); navTo('applications') }} />,
+    applications: <AdminApplications toast={showToast} initialQuery={applicationsQuery} />,
+    documents: <AdminDocuments toast={showToast} />,
     courses: <AdminCourses toast={showToast} />,
     schedules: <AdminSchedules toast={showToast} />,
     enrollments: <AdminEnrollments toast={showToast} />,
     certificates: <AdminCertificates toast={showToast} />,
+    'website-content': <AdminWebsiteContent toast={showToast} />,
     news: <AdminNews toast={showToast} />,
     gallery: <AdminGallery toast={showToast} />,
     careers: <AdminCareers toast={showToast} />,
@@ -1860,7 +1917,9 @@ export default function Admin() {
       <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="admin-sidebar-brand">
           <Link to="/" className="brand" style={{ color: '#fff', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span className="brand-mark"><HeartPulse size={18} /></span>
+            {brand.logoUrl
+              ? <img src={brand.logoUrl} alt="CP Giraneza Health" style={{ height: 34, maxWidth: 120, objectFit: 'contain' }} />
+              : <span className="brand-mark"><HeartPulse size={18} /></span>}
             <span style={{ display: 'flex', flexDirection: 'column', fontSize: 13 }}>
               CP <b>Giraneza</b><small style={{ fontSize: 7, letterSpacing: '2.7px', color: '#14b8c5', marginTop: 3 }}>HEALTH</small>
             </span>
@@ -1947,7 +2006,7 @@ export default function Admin() {
         </main>
       </div>
 
-      <ToastContainer toasts={toasts} onClose={id => {}} />
+      <ToastContainer toasts={toasts} onClose={() => {}} />
     </div>
   )
 }

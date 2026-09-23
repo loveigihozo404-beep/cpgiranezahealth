@@ -1,23 +1,61 @@
-﻿function Home() { return <HomeEmergency /> }
+﻿function HomeEmergency() { const home = useSiteContent('content.home', HOME_DEFAULTS); return <><section className="home-emergency-hero"><div className="container home-emergency-grid"><div className="home-emergency-copy"><div className="eyebrow"><span className="eyebrow-dot" /> {home.heroEyebrow}</div><h1>{home.heroTitle}</h1><p>{home.heroText}</p><div className="hero-actions"><Link className="button button-primary" to={home.primaryCtaHref}>{home.primaryCtaLabel} <ArrowRight size={17} /></Link><Link className="button button-light" to={home.secondaryCtaHref}>{home.secondaryCtaLabel} <MessageCircle size={16} /></Link></div><div className="home-trust-row"><span><CheckCircle2 size={17} /> Practice-led learning</span><span><ShieldCheck size={17} /> Safety-first care</span></div></div><div className="home-emergency-image"><img src={home.heroImage} alt="Doctors providing emergency first aid to a patient" /><div className="home-emergency-badge"><HeartPulse size={18} /><span><strong>{home.badgeTitle}</strong><small>{home.badgeText}</small></span></div></div></div></section><section className="home-stat-strip"><div className="container home-stat-grid"><div><strong>24/7</strong><span>Emergency mindset</span></div><div><strong>4</strong><span>Learning pathways</span></div><div><strong>1:1</strong><span>Human-centred support</span></div><div><strong>CP</strong><span>Care with purpose</span></div></div></section><section className="section home-response-section"><div className="container"><SectionHeading eyebrow="Care in action" title="Prepared people make safer communities." text="From a first response to continued recovery, our work connects practical skills with compassionate decisions." /><div className="home-story-grid"><article className="home-story-card home-story-wide"><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=88" alt="Healthcare professionals assisting a patient in a hospital" /><div><span className="kicker">Emergency response</span><h3>Training for the first critical minutes.</h3><p>Learn how to assess, respond and communicate clearly when someone needs immediate help.</p><Link className="card-link" to="/courses/advanced-first-aid">Explore first aid <ArrowRight size={15} /></Link></div></article><article className="home-story-card"><img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=800&q=88" alt="Doctor listening to a patient" /><div><span className="kicker">Dignified support</span><h3>Care that sees the person.</h3><p>Support for families, patients and care professionals at every stage.</p><Link className="card-link" to="/home-care">Explore home care <ArrowRight size={15} /></Link></div></article><article className="home-story-card"><img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=800&q=88" alt="Doctor preparing medical equipment" /><div><span className="kicker">Clinical confidence</span><h3>Skills you can carry forward.</h3><p>Build reliable habits through guided, practice-led learning.</p><Link className="card-link" to="/courses">View programs <ArrowRight size={15} /></Link></div></article></div></div></section><section className="home-hospital-band"><div className="container home-hospital-inner"><div><div className="eyebrow">First Aid Emergency Hospital</div><h2>Clear roles. Fast response. Better outcomes.</h2><p>A professional visual home for emergency readiness, healthcare training and the people who need help first.</p></div><Link className="button button-primary" to="/contact">Connect with CP Giraneza <ArrowRight size={17} /></Link></div></section><CTA /></> }
 
-function HomePage() { return <HomeEmergency /> }
-
-function HomeEmergency() { return <><section className="home-emergency-hero"><div className="container home-emergency-grid"><div className="home-emergency-copy"><div className="eyebrow"><span className="eyebrow-dot" /> First aid · emergency care · home support</div><h1>When every second matters, confidence saves lives.</h1><p>Practical first-aid training, emergency-care pathways and compassionate support for the people and communities we serve.</p><div className="hero-actions"><Link className="button button-primary" to="/courses/advanced-first-aid">Learn first aid <ArrowRight size={17} /></Link><Link className="button button-light" to="/contact">Talk to our team <MessageCircle size={16} /></Link></div><div className="home-trust-row"><span><CheckCircle2 size={17} /> Practice-led learning</span><span><ShieldCheck size={17} /> Safety-first care</span></div></div><div className="home-emergency-image"><img src="https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&w=1200&q=88" alt="Doctors providing emergency first aid to a patient" /><div className="home-emergency-badge"><HeartPulse size={18} /><span><strong>First Aid Emergency Hospital</strong><small>Calm action. Coordinated care.</small></span></div></div></div></section><section className="home-stat-strip"><div className="container home-stat-grid"><div><strong>24/7</strong><span>Emergency mindset</span></div><div><strong>4</strong><span>Learning pathways</span></div><div><strong>1:1</strong><span>Human-centred support</span></div><div><strong>CP</strong><span>Care with purpose</span></div></div></section><section className="section home-response-section"><div className="container"><SectionHeading eyebrow="Care in action" title="Prepared people make safer communities." text="From a first response to continued recovery, our work connects practical skills with compassionate decisions." /><div className="home-story-grid"><article className="home-story-card home-story-wide"><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=88" alt="Healthcare professionals assisting a patient in a hospital" /><div><span className="kicker">Emergency response</span><h3>Training for the first critical minutes.</h3><p>Learn how to assess, respond and communicate clearly when someone needs immediate help.</p><Link className="card-link" to="/courses/advanced-first-aid">Explore first aid <ArrowRight size={15} /></Link></div></article><article className="home-story-card"><img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=800&q=88" alt="Doctor listening to a patient" /><div><span className="kicker">Dignified support</span><h3>Care that sees the person.</h3><p>Support for families, patients and care professionals at every stage.</p><Link className="card-link" to="/home-care">Explore home care <ArrowRight size={15} /></Link></div></article><article className="home-story-card"><img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=800&q=88" alt="Doctor preparing medical equipment" /><div><span className="kicker">Clinical confidence</span><h3>Skills you can carry forward.</h3><p>Build reliable habits through guided, practice-led learning.</p><Link className="card-link" to="/courses">View programs <ArrowRight size={15} /></Link></div></article></div></div></section><section className="home-hospital-band"><div className="container home-hospital-inner"><div><div className="eyebrow">First Aid Emergency Hospital</div><h2>Clear roles. Fast response. Better outcomes.</h2><p>A professional visual home for emergency readiness, healthcare training and the people who need help first.</p></div><Link className="button button-primary" to="/contact">Connect with CP Giraneza <ArrowRight size={17} /></Link></div></section><CTA /></> }
-
-import { useEffect, useState } from 'react'
-import { Link, Navigate, NavLink, Outlet, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { ArrowRight, Award, Bell, BookOpen, CalendarDays, CheckCircle2, ChevronDown, ClipboardList, Clock3, FileText, HeartPulse, Home as HomeIcon, LayoutDashboard, LogOut, Mail, Menu, MessageCircle, Phone, Search, Settings, ShieldCheck, Sparkles, Stethoscope, UserRound, Users, X } from 'lucide-react'
+import { Fragment, useEffect, useRef, useState } from 'react'
+import { Link, Navigate, NavLink, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { ArrowRight, Award, Bell, BookOpen, CalendarDays, CheckCircle2, ChevronDown, ClipboardList, Clock3, Compass, FileText, HeartPulse, Home as HomeIcon, LayoutDashboard, LogOut, Mail, Menu, MessageCircle, Phone, Search, Settings, ShieldCheck, Stethoscope, Target, UserRound, Users, X } from 'lucide-react'
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTiktok, FaWhatsapp, FaXTwitter } from 'react-icons/fa6'
 import { ensureStudentProfile, isAdminRole, isSupabaseConfigured, supabase, getCurrentProfile, getProfileByUserId, type Profile } from './lib/supabase'
 import AdminPortal from './AdminPortal'
+import { PasswordField } from './components/PasswordField'
 import FileUploader from './components/FileUploader'
+import AiAssistant from './components/AiAssistant'
 import { createPrivateFileUrl, type UploadedFile } from './lib/storage'
+import { admissionsMenuLinks } from './admissions/AdmissionsShared'
+import { AdmissionsLanding, AdmissionsPostgraduate, AdmissionsUndergraduate } from './admissions/AdmissionsPages'
+import { AdmissionsEntryRequirements, AdmissionsFAQPage, AdmissionsHowToApply, AdmissionsImportantDates } from './admissions/AdmissionsInfo'
+import AdmissionsApply from './admissions/AdmissionsApply'
+import AdmissionsStatus from './admissions/AdmissionsStatus'
+import { HOME_DEFAULTS, ABOUT_DEFAULTS, HOMECARE_DEFAULTS, CONTACT_DEFAULTS, FOOTER_DEFAULTS, FAQ_DEFAULTS, ENROLL_DEFAULTS, PARTNERS_DEFAULTS, BRAND_DEFAULTS, useSiteContent, type ContactContent } from './lib/siteContent'
 
 type Course = { id: string | number; slug: string; title: string; category: string; description: string; duration: string; price: string; image: string; featured?: boolean; seats: number }
 
-const stats = [{ label: 'Students trained', value: '—', note: 'Connect Supabase to display live data' }, { label: 'Active programs', value: '4', note: 'Published programs' }, { label: 'Certificates issued', value: '—', note: 'Live admin metric' }, { label: 'Success rate', value: '—', note: 'Configured by admin' }]
-
 const defaultCourseImage = 'https://images.unsplash.com/photo-1576765608866-5b51046452be?auto=format&fit=crop&w=900&q=80'
+
+type CountryOption = { code: string; name: string; dialCode: string; flag: string }
+
+const countryOptions: CountryOption[] = [
+  { code: 'RW', name: 'Rwanda', dialCode: '+250', flag: '🇷🇼' },
+  { code: 'UG', name: 'Uganda', dialCode: '+256', flag: '🇺🇬' },
+  { code: 'KE', name: 'Kenya', dialCode: '+254', flag: '🇰🇪' },
+  { code: 'TZ', name: 'Tanzania', dialCode: '+255', flag: '🇹🇿' },
+  { code: 'BI', name: 'Burundi', dialCode: '+257', flag: '🇧🇮' },
+  { code: 'CD', name: 'DR Congo', dialCode: '+243', flag: '🇨🇩' },
+  { code: 'US', name: 'United States', dialCode: '+1', flag: '🇺🇸' },
+  { code: 'GB', name: 'United Kingdom', dialCode: '+44', flag: '🇬🇧' },
+  { code: 'FR', name: 'France', dialCode: '+33', flag: '🇫🇷' },
+  { code: 'BE', name: 'Belgium', dialCode: '+32', flag: '🇧🇪' },
+  { code: 'ZA', name: 'South Africa', dialCode: '+27', flag: '🇿🇦' },
+  { code: 'NG', name: 'Nigeria', dialCode: '+234', flag: '🇳🇬' },
+  { code: 'ET', name: 'Ethiopia', dialCode: '+251', flag: '🇪🇹' },
+  { code: 'CM', name: 'Cameroon', dialCode: '+237', flag: '🇨🇲' },
+  { code: 'IN', name: 'India', dialCode: '+91', flag: '🇮🇳' },
+  { code: 'DE', name: 'Germany', dialCode: '+49', flag: '🇩🇪' }
+]
+
+const defaultCountry = countryOptions.find((country) => country.code === 'RW') ?? countryOptions[0]
+
+const formatLocalPhoneNumber = (value: string) => {
+  const digits = value.replace(/\D/g, '').slice(0, 12)
+  if (digits.length <= 3) return digits
+  if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`
+  if (digits.length <= 9) return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`
+  return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 9)} ${digits.slice(9)}`
+}
+
+const formatPhoneNumber = (dialCode: string, value: string) => {
+  const digits = value.replace(/\D/g, '')
+  return digits ? `${dialCode}${digits}` : ''
+}
 
 function courseCategoryLabel(course: { category?: string; category_id?: string | null; course_categories?: { name?: string | null } | null }): string {
   return course.category || course.course_categories?.name || 'Learning program'
@@ -86,30 +124,46 @@ export default App
 
 function SiteLayout() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [admissionsOpen, setAdmissionsOpen] = useState(false)
+  const brand = useSiteContent('brand', BRAND_DEFAULTS)
   const location = useLocation()
-  const nav = useNavigate()
   const links = [['Home', '/'], ['Home Care', '/home-care'], ['Courses', '/courses'], ['Enroll', '/register'], ['Careers', '/careers'], ['About', '/about'], ['News', '/news'], ['Contact', '/contact']]
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(`${path}/`)
+  const closeMenus = () => { setMenuOpen(false); setAdmissionsOpen(false) }
+  const admissionsRef = useRef<HTMLDivElement>(null)
+  // Close the mobile menu / admissions dropdown whenever the route changes.
+  useEffect(() => { setAdmissionsOpen(false) }, [location.pathname])
+  // Close the admissions dropdown when clicking anywhere outside it.
+  useEffect(() => {
+    if (!admissionsOpen) return
+    const handlePointerDown = (event: PointerEvent) => {
+      if (admissionsRef.current && !admissionsRef.current.contains(event.target as Node)) setAdmissionsOpen(false)
+    }
+    document.addEventListener('pointerdown', handlePointerDown)
+    return () => document.removeEventListener('pointerdown', handlePointerDown)
+  }, [admissionsOpen])
   return <div className="app-shell">
     <header className="topbar"><div className="container nav-wrap">
-      <Link to="/" className="brand" onClick={() => setMenuOpen(false)}><span className="brand-mark"><HeartPulse size={21} /></span><span>CP <b>Giraneza</b><small>HEALTH</small></span></Link>
-      <nav className={`main-nav ${menuOpen ? 'open' : ''}`}>{links.map(([label, path]) => <Link key={path} className={isActive(path) ? 'active' : ''} to={path} onClick={() => setMenuOpen(false)}>{label}</Link>)}</nav>
+      <Link to="/" className="brand" onClick={closeMenus}>{brand.logoUrl ? <img className="brand-logo-img" src={brand.logoUrl} alt="CP Giraneza Health" /> : <span className="brand-mark"><HeartPulse size={21} /></span>}<span>CP <b>Giraneza</b><small>HEALTH</small></span></Link>
+      <nav className={`main-nav ${menuOpen ? 'open' : ''}`}>{links.map(([label, path]) => <Fragment key={path}>
+        <Link className={isActive(path) ? 'active' : ''} to={path} onClick={closeMenus}>{label}</Link>
+        {path === '/courses' && <div ref={admissionsRef} className={`nav-dropdown ${admissionsOpen ? 'open' : ''}`}>
+          <button type="button" className={`nav-dropdown-trigger ${isActive('/admissions') ? 'active' : ''}`} aria-haspopup="true" aria-expanded={admissionsOpen} onClick={() => setAdmissionsOpen(!admissionsOpen)}>Admissions <ChevronDown size={15} /></button>
+          <div className="nav-dropdown-menu">{admissionsMenuLinks.map(([itemLabel, itemPath]) => <Link key={itemPath} className={isActive(itemPath) ? 'active' : ''} to={itemPath} onClick={closeMenus}>{itemLabel}</Link>)}</div>
+        </div>}
+      </Fragment>)}</nav>
       <button className="icon-button menu-button" aria-label="Toggle navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
     </div></header>
-    <main><Routes><Route path="/" element={<HomeEmergency />} /><Route path="/about" element={<About />} /><Route path="/vision" element={<InfoPage eyebrow="Our direction" title="A healthier future is built through capable people." text="We are shaping a culture where practical competence and compassionate care grow together." />} /><Route path="/values" element={<InfoPage eyebrow="What guides us" title="Care with clarity. Learning with purpose." text="Respect, safety, accountability and community impact guide every learning experience." />} /><Route path="/courses" element={<Courses />} /><Route path="/courses/:slug" element={<CourseDetail />} /><Route path="/home-care" element={<HomeCare />} /><Route path="/careers" element={<Careers />} /><Route path="/careers/:slug" element={<JobDetail />} /><Route path="/news" element={<News />} /><Route path="/news/:slug" element={<Article />} /><Route path="/gallery" element={<Gallery />} /><Route path="/contact" element={<Contact />} /><Route path="/faq" element={<FAQ />} /><Route path="/partnership" element={<Partnership />} /><Route path="/verify-certificate" element={<VerifyCertificate />} /><Route path="/login" element={<AuthFlow mode="login" />} /><Route path="/register" element={<AuthFlow mode="register" />} /><Route path="/forgot-password" element={<AuthFlow mode="forgot" />} /><Route path="/reset-password" element={<ResetPassword />} /><Route path="/verify-email" element={<VerifyEmail />} /><Route path="/dashboard/*" element={<Dashboard />} /><Route path="/admin" element={<Admin />} /><Route path="*" element={<NotFound />} /></Routes></main>
+    <main><Routes><Route path="/" element={<HomeEmergency />} /><Route path="/about" element={<About />} /><Route path="/vision" element={<InfoPage eyebrow="Our direction" title="A healthier future is built through capable people." text="We are shaping a culture where practical competence and compassionate care grow together." />} /><Route path="/values" element={<InfoPage eyebrow="What guides us" title="Care with clarity. Learning with purpose." text="Respect, safety, accountability and community impact guide every learning experience." />} /><Route path="/courses" element={<Courses />} /><Route path="/courses/:slug" element={<CourseDetail />} /><Route path="/home-care" element={<HomeCare />} /><Route path="/careers" element={<Careers />} /><Route path="/careers/:slug" element={<JobDetail />} /><Route path="/news" element={<News />} /><Route path="/news/:slug" element={<Article />} /><Route path="/gallery" element={<Gallery />} /><Route path="/contact" element={<Contact />} /><Route path="/faq" element={<FAQ />} /><Route path="/partnership" element={<Partnership />} /><Route path="/verify-certificate" element={<VerifyCertificate />} /><Route path="/admissions" element={<AdmissionsLanding />} /><Route path="/admissions/undergraduate" element={<AdmissionsUndergraduate />} /><Route path="/admissions/postgraduate" element={<AdmissionsPostgraduate />} /><Route path="/admissions/entry-requirements" element={<AdmissionsEntryRequirements />} /><Route path="/admissions/how-to-apply" element={<AdmissionsHowToApply />} /><Route path="/admissions/important-dates" element={<AdmissionsImportantDates />} /><Route path="/admissions/faq" element={<AdmissionsFAQPage />} /><Route path="/admissions/apply" element={<AdmissionsApply />} /><Route path="/admissions/status" element={<AdmissionsStatus />} /><Route path="/login" element={<AuthFlow mode="login" />} /><Route path="/register" element={<AuthFlow mode="register" />} /><Route path="/forgot-password" element={<AuthFlow mode="forgot" />} /><Route path="/reset-password" element={<ResetPassword />} /><Route path="/verify-email" element={<VerifyEmail />} /><Route path="/dashboard/*" element={<Dashboard />} /><Route path="/admin" element={<Admin />} /><Route path="*" element={<NotFound />} /></Routes></main>
     <SocialLinks /><Footer />
+    <AiAssistant />
   </div>
 }
 
-function LegacyHome() {
-  const legacyCourses: Course[] = []
-
-  return <><section className="hero"><div className="container hero-grid"><div className="hero-copy"><div className="eyebrow"><span className="eyebrow-dot" /> Professional healthcare training</div><h1>Competence that changes how care is delivered.</h1><p className="hero-text">CP Giraneza Health equips aspiring and practicing care professionals with practical skills, trusted guidance and pathways to meaningful work.</p><div className="hero-actions"><Link className="button button-primary" to="/courses">Explore programs <ArrowRight size={17} /></Link><Link className="text-link" to="/about">Discover our approach <ArrowRight size={17} /></Link></div><div className="hero-proof"><span className="avatar-stack"><i>CP</i><i>GH</i><i>+</i></span><span><strong>Designed for real care</strong><small>Learning that stays with you on the floor.</small></span></div></div><div className="hero-visual"><img src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1200&q=90" alt="Nurse giving first aid to a patient during a training session" /><div className="hero-caption"><span className="live-dot" /> Live practice session <strong>First Aid Lab</strong></div><div className="floating-card card-top"><span className="status-icon"><CheckCircle2 size={18} /></span><span><strong>Practice-led</strong><small>Skills for confident care</small></span></div><div className="floating-card card-bottom"><span className="mini-icon"><CalendarDays size={18} /></span><span><strong>Next intake</strong><small>See upcoming schedules</small></span><ArrowRight size={16} /></div></div></div></section><section className="stats-band"><div className="container stats-grid">{stats.map(stat => <div className="stat" key={stat.label}><strong>{stat.value}</strong><span>{stat.label}</span><small>{stat.note}</small></div>)}</div></section><section className="section"><div className="container"><SectionHeading eyebrow="Learning pathways" title="Training for the moments that matter." text="Focused programs, thoughtful instruction and a community that believes better care starts with better preparation." link="View all programs" href="/courses" /><div className="course-grid">{legacyCourses.map((course) => <CourseCard key={String(course.id)} course={course} />)}</div></div></section><section className="split-section"><div className="container split-grid"><div className="split-image"><img src="https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=1000&q=85" alt="Healthcare team collaborating" /></div><div className="split-copy"><div className="eyebrow">Beyond the classroom</div><h2>Care is a practice, not a promise.</h2><p>From first aid to home support, our work is grounded in the details that help people feel safer, more respected and more capable.</p><div className="feature-list"><div><ShieldCheck size={20} /><span><strong>Built around safety</strong><small>Clear standards and responsible practice.</small></span></div><div><Users size={20} /><span><strong>Made for community</strong><small>Skills that travel beyond the training room.</small></span></div><div><Sparkles size={20} /><span><strong>Always improving</strong><small>Thoughtful learning for a changing field.</small></span></div></div><Link className="button button-dark" to="/home-care">Explore home care <ArrowRight size={16} /></Link></div></div></section><CTA /></> }
-
 function SectionHeading({ eyebrow, title, text, link, href }: { eyebrow: string; title: string; text: string; link?: string; href?: string }) { return <div className="section-heading"><div><div className="eyebrow">{eyebrow}</div><h2>{title}</h2><p>{text}</p></div>{link && href && <Link className="text-link heading-link" to={href}>{link} <ArrowRight size={16} /></Link>}</div> }
 function CourseCard({ course }: { course: Course }) { return <article className="course-card"><div className="course-image"><img src={course.image} alt={course.title} />{course.featured && <span className="badge">Featured</span>}</div><div className="course-content"><span className="kicker">{course.category}</span><h3>{course.title}</h3><p>{course.description}</p><div className="course-meta"><span><Clock3 size={15} /> {course.duration}</span><span>{course.price}</span></div><Link className="card-link" to={`/courses/${course.slug}`}>View program <ArrowRight size={15} /></Link></div></article> }
-function About() { return <InfoPage eyebrow="About CP Giraneza Health" title="Training people to make care feel possible." text="CP Giraneza Health is a healthcare training and home-care platform focused on practical competence, professional growth and dignified support at home. Our programs are intentionally clear, grounded and connected to the realities of care." /> }
-function InfoPage({ eyebrow, title, text, image }: { eyebrow: string; title: string; text: string; image?: string }) { return <PageIntro eyebrow={eyebrow} title={title} text={text}>{image && <img className="wide-page-image" src={image} alt="Healthcare learning in practice" />}<div className="values-grid"><div><Stethoscope /><h3>Practical excellence</h3><p>Learning designed around confident decisions, clear communication and safe routines.</p></div><div><HeartPulse /><h3>Human at the centre</h3><p>Every learner, client and family deserves patience, dignity and respect.</p></div><div><Award /><h3>Visible progress</h3><p>Trackable learning pathways that help people keep moving forward.</p></div></div></PageIntro> }
+function About() { const about = useSiteContent('content.about', ABOUT_DEFAULTS); return <><InfoPage eyebrow={about.eyebrow} title={about.title} text={about.text} image={about.image || undefined} values={about.values} />{(about.mission || about.vision) && <section className="section"><div className="container"><div className="about-mv-grid">{about.mission && <article className="about-mv-card"><span className="about-mv-icon"><Compass size={24} /></span><h3>Our mission</h3><p>{about.mission}</p></article>}{about.vision && <article className="about-mv-card"><span className="about-mv-icon"><Target size={24} /></span><h3>Our vision</h3><p>{about.vision}</p></article>}</div></div></section>}{about.leadership.length > 0 && <section className="section soft"><div className="container"><div className="section-heading"><div><div className="eyebrow">Leadership &amp; team</div><h2>The people guiding our care.</h2></div></div><div className="leadership-grid">{about.leadership.map((person) => <div className="leadership-card" key={person.name}><span className="leadership-avatar"><UserRound size={22} /></span><strong>{person.name}</strong><small>{person.role}</small></div>)}</div></div></section>}</> }
+function InfoPage({ eyebrow, title, text, image, values }: { eyebrow: string; title: string; text: string; image?: string; values?: Array<{ title: string; text: string }> }) { const valueIcons = [Stethoscope, HeartPulse, Award]; const items = values && values.length ? values : [{ title: 'Practical excellence', text: 'Learning designed around confident decisions, clear communication and safe routines.' }, { title: 'Human at the centre', text: 'Every learner, client and family deserves patience, dignity and respect.' }, { title: 'Visible progress', text: 'Trackable learning pathways that help people keep moving forward.' }]; return <PageIntro eyebrow={eyebrow} title={title} text={text}>{image && <img className="wide-page-image" src={image} alt="Healthcare learning in practice" />}<div className="values-grid">{items.map((value, i) => { const Icon = valueIcons[i % valueIcons.length]; return <div key={value.title}><Icon /><h3>{value.title}</h3><p>{value.text}</p></div> })}</div></PageIntro> }
 function PageIntro({ eyebrow, title, text, children, variant = '' }: { eyebrow: string; title: string; text: string; children?: React.ReactNode; variant?: string }) { return <section className={`page-intro ${variant}`}><div className="container narrow"><div className="eyebrow">{eyebrow}</div><h1>{title}</h1><p className="lead">{text}</p>{children}</div></section> }
 function Courses() {
   const [query, setQuery] = useState('')
@@ -199,13 +253,38 @@ async function insertPublicRecord(table: 'homecare_requests' | 'contact_messages
   const { error } = await supabase.from(table).insert(payload as never)
   if (error) throw error
 }
-function HomeCare() { const [sent, setSent] = useState(false); return <><PageIntro eyebrow="Home care" title="Thoughtful support, where life happens." text="Our home-care services are designed to support everyday wellbeing with respect, clear communication and a dependable human presence." /><section className="section"><div className="container"><div className="service-grid">{['Elderly support', 'Home assistance', 'Post-care support', 'Basic home health support'].map((s, i) => <div className="service-card" key={s}><span className="service-number">0{i + 1}</span><HeartPulse size={21} /><h3>{s}</h3><p>Configurable support shaped around each person, family and home.</p></div>)}</div><div className="form-panel"><div><div className="eyebrow">Request a conversation</div><h2>Tell us what support looks like.</h2><p>Share a few details and our team will follow up to understand your needs.</p></div>{sent ? <div className="success-message"><CheckCircle2 /><strong>Request received</strong><span>Thank you. A member of our team will contact you soon.</span></div> : <SimpleForm onSubmit={async data => { await insertPublicRecord('homecare_requests', { name: String(data.get('Your name') ?? ''), email: String(data.get('Email address') ?? ''), phone: String(data.get('Phone number') ?? ''), preferred_date: String(data.get('Preferred date') ?? ''), location: String(data.get('Location') ?? ''), message: String(data.get('How can we help?') ?? '') }); setSent(true) }} button="Request support" fields={['Your name', 'Email address', 'Phone number', 'Preferred date', 'Location', 'How can we help?']} />}</div></div></section></> }
-const careerRoles = [
-  { slug: 'job-1', title: 'Healthcare Training Facilitator', department: 'Programs', summary: 'Help learners translate knowledge into confident, compassionate action.', heading: 'Support people with practical, compassionate care.', description: 'Support program delivery, learner feedback and the continuous improvement of practical training experiences.', requirements: 'Relevant healthcare experience, thoughtful facilitation and a genuine interest in developing people.' },
-  { slug: 'job-2', title: 'Home Care Coordinator', department: 'Operations', summary: 'Coordinate dependable, dignified support for clients and their families.', heading: 'Make every home-care experience feel supported.', description: 'Coordinate schedules, client communication and care-team follow-up so families receive a calm, dependable service.', requirements: 'Strong organization, clear communication and experience supporting people in a care or community setting.' },
-  { slug: 'job-3', title: 'Community Outreach Associate', department: 'Community', summary: 'Build trusted relationships that connect communities with better care.', heading: 'Bring useful health learning closer to people.', description: 'Develop community relationships, support outreach events and help more people discover practical training and home-care support.', requirements: 'A confident communicator with community insight, initiative and a strong commitment to respectful service.' }
+type HomeCareServiceItem = { id: string; name: string; description: string }
+async function fetchActiveHomecareServices(): Promise<HomeCareServiceItem[]> {
+  if (!supabase || !isSupabaseConfigured) return []
+  const { data, error } = await supabase.from('homecare_services').select('id, name, description').eq('is_active', true).order('name')
+  if (error) return []
+  return ((data as HomeCareServiceItem[] | null) ?? []).map((row) => ({ id: row.id, name: row.name, description: row.description }))
+}
+function HomeCare() {
+  const [sent, setSent] = useState(false)
+  const homecare = useSiteContent('content.homecare', HOMECARE_DEFAULTS)
+  const [dbServices, setDbServices] = useState<HomeCareServiceItem[]>([])
+  useEffect(() => { let active = true; fetchActiveHomecareServices().then((rows) => { if (active) setDbServices(rows) }); return () => { active = false } }, [])
+  const services = dbServices.length ? dbServices.map((row, i) => ({ title: row.name, text: row.description || homecare.serviceNote, n: `0${i + 1}` })) : homecare.services.map((title, i) => ({ title, text: homecare.serviceNote, n: `0${i + 1}` }))
+  return <><PageIntro eyebrow={homecare.eyebrow} title={homecare.title} text={homecare.text} /><section className="section"><div className="container"><div className="service-grid">{services.map((s) => <div className="service-card" key={s.title}><span className="service-number">{s.n}</span><HeartPulse size={21} /><h3>{s.title}</h3><p>{s.text}</p></div>)}</div><div className="form-panel"><div><div className="eyebrow">{homecare.formEyebrow}</div><h2>{homecare.formTitle}</h2><p>{homecare.formText}</p></div>{sent ? <div className="success-message"><CheckCircle2 /><strong>Request received</strong><span>Thank you. A member of our team will contact you soon.</span></div> : <SimpleForm onSubmit={async data => { await insertPublicRecord('homecare_requests', { name: String(data.get('Your name') ?? ''), email: String(data.get('Email address') ?? ''), phone: String(data.get('Phone number') ?? ''), preferred_date: String(data.get('Preferred date') ?? ''), location: String(data.get('Location') ?? ''), message: String(data.get('How can we help?') ?? '') }); setSent(true) }} button="Request support" fields={['Your name', 'Email address', 'Phone number', 'Preferred date', 'Location', 'How can we help?']} />}</div></div></section></>
+}
+type CareerItem = { slug: string; title: string; department: string; location: string; employment_type: string; summary: string; heading: string; description: string; requirements: string[] }
+const careerRoles: CareerItem[] = [
+  { slug: 'job-1', title: 'Healthcare Training Facilitator', department: 'Programs', location: 'Kigali', employment_type: 'Full time', summary: 'Help learners translate knowledge into confident, compassionate action.', heading: 'Support people with practical, compassionate care.', description: 'Support program delivery, learner feedback and the continuous improvement of practical training experiences.', requirements: ['Relevant healthcare experience', 'Thoughtful facilitation', 'A genuine interest in developing people'] },
+  { slug: 'job-2', title: 'Home Care Coordinator', department: 'Operations', location: 'Kigali', employment_type: 'Full time', summary: 'Coordinate dependable, dignified support for clients and their families.', heading: 'Make every home-care experience feel supported.', description: 'Coordinate schedules, client communication and care-team follow-up so families receive a calm, dependable service.', requirements: ['Strong organization', 'Clear communication', 'Experience supporting people in a care or community setting'] },
+  { slug: 'job-3', title: 'Community Outreach Associate', department: 'Community', location: 'Kigali', employment_type: 'Full time', summary: 'Build trusted relationships that connect communities with better care.', heading: 'Bring useful health learning closer to people.', description: 'Develop community relationships, support outreach events and help more people discover practical training and home-care support.', requirements: ['A confident communicator', 'Community insight and initiative', 'A strong commitment to respectful service'] }
 ]
-function Careers() { return <><PageIntro variant="careers-intro" eyebrow="Careers" title="Bring your care, curiosity and craft." text="Join a growing team helping people build stronger skills and more supported lives." /><section className="section"><div className="container"><div className="job-list">{careerRoles.map((role) => <Link className="job-row" to={`/careers/${role.slug}`} key={role.slug}><span><span className="kicker">{role.department}</span><h3>{role.title}</h3><small>Kigali · Full time</small></span><ArrowRight /></Link>)}</div></div></section></> }
+async function fetchPublishedCareers(): Promise<CareerItem[]> {
+  if (!supabase || !isSupabaseConfigured) return []
+  const { data, error } = await supabase.from('careers').select('slug, job_title, department, location, employment_type, description, requirements').eq('is_published', true).order('created_at')
+  if (error) return []
+  return ((data as Array<{ slug: string; job_title: string; department: string; location: string; employment_type: string; description: string; requirements: unknown }> | null) ?? []).map((row) => ({ slug: row.slug, title: row.job_title, department: row.department, location: row.location, employment_type: row.employment_type, summary: row.description.slice(0, 120), heading: row.job_title, description: row.description, requirements: Array.isArray(row.requirements) ? row.requirements as string[] : [] }))
+}
+function Careers() {
+  const [roles, setRoles] = useState<CareerItem[]>(careerRoles)
+  useEffect(() => { let active = true; fetchPublishedCareers().then((rows) => { if (active && rows.length) setRoles(rows) }); return () => { active = false } }, [])
+  return <><PageIntro variant="careers-intro" eyebrow="Careers" title="Bring your care, curiosity and craft." text="Join a growing team helping people build stronger skills and more supported lives." /><section className="section"><div className="container"><div className="job-list">{roles.map((role) => <Link className="job-row" to={`/careers/${role.slug}`} key={role.slug}><span><span className="kicker">{role.department}</span><h3>{role.title}</h3><small>{role.location} · {role.employment_type}</small></span><ArrowRight /></Link>)}</div></div></section></>
+}
 function JobDetail() {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
@@ -213,7 +292,9 @@ function JobDetail() {
   const [resumeFile, setResumeFile] = useState<UploadedFile | null>(null)
   const [applicationId] = useState(() => crypto.randomUUID())
   const { slug } = useParams()
-  const role = careerRoles.find((item) => item.slug === slug) ?? careerRoles[0]
+  const [dbRole, setDbRole] = useState<CareerItem | null>(null)
+  useEffect(() => { let active = true; fetchPublishedCareers().then((rows) => { const match = rows.find((row) => row.slug === slug); if (active && match) setDbRole(match) }); return () => { active = false } }, [slug])
+  const role = dbRole ?? careerRoles.find((item) => item.slug === slug) ?? careerRoles[0]
 
   const submitApplication = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -249,12 +330,8 @@ function JobDetail() {
           <h2>{role.heading}</h2>
           <p>{role.description} We value clear communicators who are curious, dependable and committed to safe care.</p>
           <h3>What we are looking for</h3>
-          <p>{role.requirements}</p>
-          <ul className="check-list">
-            <li><CheckCircle2 /> Strong communication and mentoring skills</li>
-            <li><CheckCircle2 /> Commitment to safe, respectful care</li>
-            <li><CheckCircle2 /> Ability to support learners in practical settings</li>
-          </ul>
+          <p>{Array.isArray(role.requirements) ? role.requirements.join(' ') : String(role.requirements)}</p>
+          {Array.isArray(role.requirements) && role.requirements.length > 0 && <ul className="check-list">{role.requirements.map((requirement) => <li key={requirement}><CheckCircle2 /> {requirement}</li>)}</ul>}
         </div>
 
         <aside className="career-application-panel">
@@ -316,8 +393,40 @@ function JobDetail() {
     </section>
   </>
 }
-function News() { return <><PageIntro eyebrow="Ideas & updates" title="What we are learning, building and sharing." text="Stories from the work of preparing people for better care." /><section className="section"><div className="container news-grid">{['Why practical confidence matters in care', 'A closer look at supportive home care', 'Learning that respects the learner'].map((title, i) => <Link className="news-card" to={`/news/story-${i + 1}`} key={title}><img src={`https://images.unsplash.com/photo-${['1576091160550-2173dba999ef','1559757175-0eb30cd8c063','1505751172876-fa1923c5c528'][i]}?auto=format&fit=crop&w=800&q=80`} alt="" /><div><span className="kicker">Insights · Sep {10 + i}, 2026</span><h3>{title}</h3><span className="card-link">Read story <ArrowRight size={15} /></span></div></Link>)}</div></section></> }
-function Article() { return <><PageIntro eyebrow="Insights · September 2026" title="Why practical confidence matters in care" text="The best training creates room for people to think clearly when the moment gets busy." /><section className="section"><div className="container article"><p className="dropcap">Care is full of details. A calm handover, a clear question, an observation shared at the right time. These small acts shape how safe and supported someone feels.</p><p>At CP Giraneza Health, we design learning around these moments. The goal is not simply to remember information, but to build the confidence to notice, communicate and act responsibly.</p><blockquote>Competence grows when practice is connected to purpose.</blockquote><p>Our programs are built to be clear, supportive and practical. That is how learning becomes something people can carry into the communities they serve.</p></div></section></> }
+type NewsItem = { slug: string; title: string; category: string; excerpt: string; content: string; image_url: string | null; published_at: string | null }
+async function fetchPublishedNews(): Promise<NewsItem[]> {
+  if (!supabase || !isSupabaseConfigured) return []
+  const { data, error } = await supabase.from('news').select('slug, title, category, excerpt, content, image_url, published_at').eq('is_published', true).order('published_at', { ascending: false })
+  if (error) return []
+  return (data as NewsItem[] | null) ?? []
+}
+const newsFallbackImg = (i: number) => `https://images.unsplash.com/photo-${['1576091160550-2173dba999ef', '1559757175-0eb30cd8c063', '1505751172876-fa1923c5c528'][i % 3]}?auto=format&fit=crop&w=800&q=80`
+const newsDateLabel = (value: string | null) => value ? new Date(value).toLocaleDateString('en-GB', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Latest'
+function News() {
+  const [items, setItems] = useState<NewsItem[]>([])
+  const [loading, setLoading] = useState(true)
+  useEffect(() => { let active = true; fetchPublishedNews().then((rows) => { if (active) setItems(rows) }).finally(() => { if (active) setLoading(false) }); return () => { active = false } }, [])
+  const cards: Array<{ slug: string; title: string; kicker: string; image: string }> = items.length
+    ? items.map((item) => ({ slug: item.slug, title: item.title, kicker: `${item.category} · ${newsDateLabel(item.published_at)}`, image: item.image_url || newsFallbackImg(0) }))
+    : ['Why practical confidence matters in care', 'A closer look at supportive home care', 'Learning that respects the learner'].map((title, i) => ({ slug: `story-${i + 1}`, title, kicker: `Insights · Sep ${10 + i}, 2026`, image: newsFallbackImg(i) }))
+  return <><PageIntro eyebrow="Ideas & updates" title="What we are learning, building and sharing." text="Stories from the work of preparing people for better care." /><section className="section"><div className="container news-grid">{loading ? <div className="admin-empty"><p>Loading stories…</p></div> : cards.map((card) => <Link className="news-card" to={`/news/${card.slug}`} key={card.slug}><img src={card.image} alt="" /><div><span className="kicker">{card.kicker}</span><h3>{card.title}</h3><span className="card-link">Read story <ArrowRight size={15} /></span></div></Link>)}</div></section></>
+}
+const sampleArticle: NewsItem = { slug: 'story-1', title: 'Why practical confidence matters in care', category: 'Insights', excerpt: 'The best training creates room for people to think clearly when the moment gets busy.', content: 'Care is full of details. A calm handover, a clear question, an observation shared at the right time. These small acts shape how safe and supported someone feels.\n\nAt CP Giraneza Health, we design learning around these moments. The goal is not simply to remember information, but to build the confidence to notice, communicate and act responsibly.\n\n> Competence grows when practice is connected to purpose.\n\nOur programs are built to be clear, supportive and practical. That is how learning becomes something people can carry into the communities they serve.', image_url: null, published_at: null }
+function Article() {
+  const { slug = '' } = useParams()
+  const [item, setItem] = useState<NewsItem | null>(null)
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    let active = true
+    setLoading(true)
+    fetchPublishedNews().then((rows) => { const match = rows.find((row) => row.slug === slug); if (active) setItem(match ?? (slug === 'story-1' ? sampleArticle : null)) }).finally(() => { if (active) setLoading(false) })
+    return () => { active = false }
+  }, [slug])
+  if (loading) return <section className="page-intro"><div className="container narrow"><p>Loading story…</p></div></section>
+  if (!item) return <NotFound />
+  const paragraphs = item.content.split(/\n+/).filter(Boolean)
+  return <><PageIntro eyebrow={`${item.category} · ${newsDateLabel(item.published_at)}`} title={item.title} text={item.excerpt} /><section className="section"><div className="container article">{item.image_url && <img className="wide-page-image" src={item.image_url} alt="" />}{paragraphs.map((paragraph, i) => paragraph.startsWith('>') ? <blockquote key={i}>{paragraph.replace(/^>\s*/, '')}</blockquote> : <p key={i} className={i === 0 ? 'dropcap' : undefined}>{paragraph}</p>)}</div></section></>
+}
 function VerifyEmail() {
   const [resent, setResent] = useState(false)
   const [error, setError] = useState('')
@@ -334,19 +443,15 @@ function VerifyEmail() {
     else setResent(true)
   }
 
-  return <section className="auth-page confirmation-page"><div className="auth-card confirmation-card"><div className="success-message centered"><Mail /><div className="eyebrow">Email verification</div><h1>Check your email.</h1><span>We've sent a secure verification link to your email address. Please check your inbox and verify your account to continue.</span>{error && <p className="error-text">{error}</p>}{resent && <p className="success-text">Verification email sent again.</p>}<button className="button button-primary" onClick={resend} disabled={!configured}>{resent ? 'Send again' : 'Resend verification email'}</button><Link className="text-link" to="/login">Back to login <ArrowRight size={15} /></Link></div></div></section>
+  return <section className="auth-page confirmation-page"><div className="auth-card confirmation-card"><div className="success-message centered"><Mail /><div className="eyebrow">Email verification</div><h1>Check your email.</h1><span>We&apos;ve sent a secure verification link to your email address. Please check your inbox and verify your account to continue.</span>{error && <p className="error-text">{error}</p>}{resent && <p className="success-text">Verification email sent again.</p>}<button className="button button-primary" onClick={resend} disabled={!configured}>{resent ? 'Send again' : 'Resend verification email'}</button><Link className="text-link" to="/login">Back to login <ArrowRight size={15} /></Link></div></div></section>
 }
 function Gallery() { return <><PageIntro eyebrow="Gallery" title="A glimpse into learning and care." text="A growing collection of moments from our programs and community work." /><section className="section"><div className="container gallery-grid">{['photo-1576091160399-112ba8d25d1d','photo-1551076805-e1869033e561','photo-1584515933487-779824d29309','photo-1516841273335-e39b37888115','photo-1559757175-0eb30cd8c063','photo-1576091160550-2173dba999ef'].map((id, i) => <img key={id} src={`https://images.unsplash.com/${id}?auto=format&fit=crop&w=800&q=80`} alt={`CP Giraneza Health moment ${i + 1}`} />)}</div></section></> }
+const contactTopics = ['Programs & Training', 'Home Care Support', 'Admissions', 'Certificates', 'Partnerships', 'Careers', 'General enquiry']
+const partnershipTopics = ['Training & Capacity Building', 'Home Care Referrals', 'Community Outreach', 'Institutional Collaboration', 'Other']
 function Contact() {
   const [sent, setSent] = useState(false)
-  const socials = [
-    { label: 'Instagram', href: 'https://instagram.com', icon: FaInstagram },
-    { label: 'LinkedIn', href: 'https://linkedin.com', icon: FaLinkedinIn },
-    { label: 'WhatsApp', href: 'https://wa.me/250000000000', icon: FaWhatsapp },
-    { label: 'Facebook', href: 'https://facebook.com', icon: FaFacebookF },
-    { label: 'TikTok', href: 'https://tiktok.com', icon: FaTiktok },
-    { label: 'X', href: 'https://x.com', icon: FaXTwitter }
-  ]
+  const contact = useSiteContent('content.contact', CONTACT_DEFAULTS)
+  const socials = buildSocialLinks(contact.socials)
 
   return <>
     <section className="contact-page-shell">
@@ -357,9 +462,9 @@ function Contact() {
           <p>Questions about programs, partnerships or home care? Our team is ready to listen.</p>
 
           <div className="contact-details">
-            <div><Mail /><span><small>Email us</small><strong>hello@cpgiranezahealth.org</strong></span></div>
-            <div><HomeIcon /><span><small>Our base</small><strong>Kigali, Rwanda</strong></span></div>
-            <div><Bell /><span><small>Response time</small><strong>Within two working days</strong></span></div>
+            <div><Mail /><span><small>Email us</small><strong>{contact.email}</strong></span></div>
+            <div><HomeIcon /><span><small>Our base</small><strong>{contact.base}</strong></span></div>
+            <div><Bell /><span><small>Response time</small><strong>{contact.responseNote}</strong></span></div>
           </div>
 
           <div className="social-card">
@@ -383,7 +488,7 @@ function Contact() {
             </div>
           ) : (
             <div className="form-panel compact contact-form-card">
-              <SimpleForm onSubmit={async data => { await insertPublicRecord('contact_messages', { name: String(data.get('Your name') ?? ''), email: String(data.get('Email address') ?? ''), phone: String(data.get('Phone number') ?? ''), subject: String(data.get('Subject') ?? ''), message: String(data.get('Message') ?? '') }); setSent(true) }} button="Send message" fields={['Your name', 'Email address', 'Phone number', 'Subject', 'Message']} />
+              <SimpleForm onSubmit={async data => { await insertPublicRecord('contact_messages', { name: String(data.get('Your name') ?? ''), email: String(data.get('Email address') ?? ''), phone: String(data.get('Phone number') ?? ''), subject: String(data.get('Subject') ?? ''), message: String(data.get('Message') ?? '') }); setSent(true) }} button="Send message" fields={['Your name', 'Email address', 'Phone number', 'Subject', 'Message']} selectFields={{ Subject: { placeholder: 'Choose a subject', options: contactTopics } }} />
             </div>
           )}
         </div>
@@ -391,8 +496,33 @@ function Contact() {
     </section>
   </>
 }
-function Partnership() { return <><PageIntro eyebrow="Partnerships" title="Build better care with us." text="We welcome thoughtful partnerships with organizations committed to learning, safety and community wellbeing." /><section className="section"><div className="container narrow"><div className="form-panel compact"><SimpleForm onSubmit={async data => { await insertPublicRecord('partnership_requests', { organization_name: String(data.get('Organization name') ?? ''), contact_person: String(data.get('Contact person') ?? ''), email: String(data.get('Email address') ?? ''), partnership_type: String(data.get('Partnership type') ?? ''), message: String(data.get('Tell us about your idea') ?? '') }) }} button="Send partnership request" fields={['Organization name', 'Contact person', 'Email address', 'Partnership type', 'Tell us about your idea']} /></div></div></section></> }
-function FAQ() { const faqs = ['How do I enroll in a program?', 'Are programs available online?', 'How are certificates verified?', 'How can I request home-care support?']; const [open, setOpen] = useState(0); return <><PageIntro eyebrow="Questions, answered" title="A clearer start." text="Find quick answers about learning, support and working with CP Giraneza Health." /><section className="section"><div className="container faq-list">{faqs.map((q, i) => <div className={`faq-item ${open === i ? 'open' : ''}`} key={q}><button onClick={() => setOpen(open === i ? -1 : i)}><span>{q}</span><ChevronDown size={18} /></button>{open === i && <p>Our team will guide you through the next step. Create an account or contact us and we will share the current details for this service.</p>}</div>)}</div></section></> }
+function Partnership() {
+  const partners = useSiteContent('content.partners', PARTNERS_DEFAULTS)
+  const [sent, setSent] = useState(false)
+  return <>
+    <PageIntro eyebrow={partners.eyebrow} title={partners.title} text={partners.text} />
+    <section className="section">
+      <div className="container">
+        <div className="partner-grid">
+          {partners.names.map((name) => (
+            <div className="partner-card" key={name}><span className="partner-monogram">{name.split(' ').map(word => word[0]).join('').slice(0, 2).toUpperCase()}</span><strong>{name}</strong></div>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section className="section soft">
+      <div className="container narrow">
+        <div className="form-panel compact">
+          <div className="eyebrow">Become a partner</div>
+          <h2>Tell us how you would like to work together.</h2>
+          <p>Share a few details and our team will reach out to explore the partnership.</p>
+          {sent ? <div className="success-message"><CheckCircle2 /><strong>Request received</strong><span>Thank you. We will be in touch about a potential partnership.</span></div> : <SimpleForm onSubmit={async data => { await insertPublicRecord('partnership_requests', { organization_name: String(data.get('Organization name') ?? ''), contact_person: String(data.get('Contact person') ?? ''), email: String(data.get('Email address') ?? ''), partnership_type: String(data.get('Partnership type') ?? ''), message: String(data.get('Tell us about your idea') ?? '') }); setSent(true) }} button="Send partnership request" fields={['Organization name', 'Contact person', 'Email address', 'Partnership type', 'Tell us about your idea']} selectFields={{ 'Partnership type': { placeholder: 'Choose a partnership type', options: partnershipTopics } }} />}
+        </div>
+      </div>
+    </section>
+  </>
+}
+function FAQ() { const faqContent = useSiteContent('content.faq', FAQ_DEFAULTS); const faqs = faqContent.items; const [open, setOpen] = useState(0); return <><PageIntro eyebrow="Questions, answered" title="A clearer start." text="Find quick answers about learning, support and working with CP Giraneza Health." /><section className="section"><div className="container faq-list">{faqs.map((item, i) => <div className={`faq-item ${open === i ? 'open' : ''}`} key={item.question}><button onClick={() => setOpen(open === i ? -1 : i)}><span>{item.question}</span><ChevronDown size={18} /></button>{open === i && <p>{item.answer}</p>}</div>)}</div></section></> }
 function VerifyCertificate() {
   const [code, setCode] = useState('')
   const [checking, setChecking] = useState(false)
@@ -416,13 +546,18 @@ function VerifyCertificate() {
   return <><PageIntro eyebrow="Certificate verification" title="Confirm a certificate with confidence." text="Enter a certificate number or verification code to check an issued CP Giraneza Health certificate." /><section className="section"><div className="container verify-box"><ShieldCheck size={38} /><h2>Certificate lookup</h2><p>Only enter the public certificate identifier. Private learner information is not displayed.</p><div className="verify-form"><input value={code} onChange={e => setCode(e.target.value)} placeholder="Certificate number or code" onKeyDown={e => e.key === 'Enter' && verify()} /><button className="button button-primary" onClick={verify} disabled={checking}>{checking ? 'Checking…' : 'Verify'}</button></div>{result && <div className={`verify-result ${result.found ? 'valid' : 'invalid'}`}>{result.found ? <><CheckCircle2 /><strong>Certificate Verified</strong><span>Holder: {result.name} · Course: {result.course} · Issued: {result.date}</span></> : <><X /><strong>Certificate Not Found</strong><span>No valid certificate matches that code. Contact CP Giraneza Health if you believe this is an error.</span></>}</div>}</div></section></>
 }
 function AuthForm({ mode }: { mode: 'login' | 'register' | 'forgot' }) {
+  const brand = useSiteContent('brand', BRAND_DEFAULTS)
+  const enroll = useSiteContent('content.enroll', ENROLL_DEFAULTS)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
-  const [phone, setPhone] = useState('')
+  const [phoneLocal, setPhoneLocal] = useState('')
+  const [phoneCountry, setPhoneCountry] = useState<CountryOption>(defaultCountry)
+  const [phoneCountryOpen, setPhoneCountryOpen] = useState(false)
+  const [phoneCountrySearch, setPhoneCountrySearch] = useState('')
   const [age, setAge] = useState('')
   const [sex, setSex] = useState('')
   const [diploma, setDiploma] = useState('')
@@ -435,17 +570,39 @@ function AuthForm({ mode }: { mode: 'login' | 'register' | 'forgot' }) {
   const isRegister = mode === 'register'
   const isForgot = mode === 'forgot'
   const navigate = useNavigate()
+  const location = useLocation()
+  // Optional safe ?next= destination, used by flows such as the admissions application.
+  const nextSearchParam = new URLSearchParams(location.search).get('next')
+  const nextPath = nextSearchParam && nextSearchParam.startsWith('/') && !nextSearchParam.startsWith('//') ? nextSearchParam : ''
+
+  // Close the country-code dropdown when clicking anywhere outside it.
+  const phoneCountryRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (!phoneCountryOpen) return
+    const handlePointerDown = (event: PointerEvent) => {
+      if (phoneCountryRef.current && !phoneCountryRef.current.contains(event.target as Node)) setPhoneCountryOpen(false)
+    }
+    document.addEventListener('pointerdown', handlePointerDown)
+    return () => document.removeEventListener('pointerdown', handlePointerDown)
+  }, [phoneCountryOpen])
+
+  const filteredPhoneCountries = countryOptions.filter((countryOption) => {
+    const query = phoneCountrySearch.trim().toLowerCase()
+    if (!query) return true
+    return countryOption.name.toLowerCase().includes(query) || countryOption.code.toLowerCase().includes(query) || countryOption.dialCode.includes(query)
+  })
 
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError('')
     setSubmitting(true)
+    const normalizedPhone = formatPhoneNumber(phoneCountry.dialCode, phoneLocal)
     if (isRegister && password !== passwordConfirmation) {
       setError('Passwords do not match.')
       setSubmitting(false)
       return
     }
-    if (isRegister && !/^\+?[0-9\s()-]{7,20}$/.test(phone.trim())) {
+    if (isRegister && !/^\+\d{8,15}$/.test(normalizedPhone)) {
       setError('Enter a valid phone number.')
       setSubmitting(false)
       return
@@ -466,11 +623,12 @@ function AuthForm({ mode }: { mode: 'login' | 'register' | 'forgot' }) {
         if (loginError || !data.user) { setError('Invalid email or password.'); return }
         const profile = await getProfileByUserId(data.user.id)
         if (!profile) { await supabase.auth.signOut(); setError('Account profile unavailable.'); return }
-        navigate(isAdminRole(profile.role) ? '/admin' : '/dashboard', { replace: true })
+        if (isAdminRole(profile.role)) { navigate('/admin', { replace: true }); return }
+        navigate(nextPath || '/dashboard', { replace: true })
         return
       }
       const authResult = isRegister
-        ? await supabase.auth.signUp({ email: normalizedEmail, password, options: { data: { full_name: fullName.trim(), phone: phone.trim(), age: Number(age), sex, diploma: diploma.trim(), languages: languages.trim(), identification_number: identificationNumber.trim(), residence: residence.trim(), address: address.trim(), country: country.trim(), request_status: 'PENDING' }, emailRedirectTo: `${window.location.origin}/verify-email` } })
+        ? await supabase.auth.signUp({ email: normalizedEmail, password, options: { data: { full_name: fullName.trim(), phone: normalizedPhone.trim(), age: Number(age), sex, diploma: diploma.trim(), languages: languages.trim(), identification_number: identificationNumber.trim(), residence: residence.trim(), address: address.trim(), country: country.trim(), request_status: 'PENDING' }, emailRedirectTo: `${window.location.origin}/verify-email` } })
         : await supabase.auth.resetPasswordForEmail(normalizedEmail, { redirectTo: `${window.location.origin}/reset-password` })
       const authError = authResult.error
       if (authError) { setError(authError.message); return }
@@ -492,7 +650,7 @@ function AuthForm({ mode }: { mode: 'login' | 'register' | 'forgot' }) {
         }
 
         await ensureStudentProfile(sessionUserId)
-        navigate('/dashboard', { replace: true })
+        navigate(nextPath || '/dashboard', { replace: true })
         return
       }
       setSubmitted(true)
@@ -504,11 +662,10 @@ function AuthForm({ mode }: { mode: 'login' | 'register' | 'forgot' }) {
   }
 
   return <section className={`auth-page ${submitted ? 'confirmation-page' : ''}`}>
-    <div className="auth-shell">
-      <div className="login-title">CP Giraneza Health</div>
-      {submitted ? (
+    {submitted ? (
+      <div className="auth-shell auth-shell--confirmation">
         <div className="auth-card confirmation-card">
-          <Link to="/" className="brand auth-brand"><span className="brand-mark"><HeartPulse size={21} /></span><span>CP <b>Giraneza</b><small>HEALTH</small></span></Link>
+          <Link to="/" className="brand auth-brand">{brand.logoUrl ? <img className="brand-logo-img" src={brand.logoUrl} alt="CP Giraneza Health" /> : <span className="brand-mark"><HeartPulse size={21} /></span>}<span>CP <b>Giraneza</b><small>HEALTH</small></span></Link>
           <div className="success-message centered">
             <CheckCircle2 />
             <strong>{isForgot ? 'Check your inbox' : isRegister ? 'Check your email' : 'Welcome back'}</strong>
@@ -516,39 +673,167 @@ function AuthForm({ mode }: { mode: 'login' | 'register' | 'forgot' }) {
             <Link className="button button-primary" to={isRegister ? '/verify-email' : '/dashboard'}>{isRegister ? 'Continue' : 'Open dashboard'}</Link>
           </div>
         </div>
-      ) : (
-        <div className="auth-card login-card">
-          <div className="login-heading">Sign in to your account</div>
-          {!isSupabaseConfigured && <div className="error-text" role="status">Authentication is unavailable until Supabase is connected. Add `frontend/.env` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then restart Vite.</div>}
-          <form onSubmit={submit} className="login-form">
-            {isRegister && <label className="login-field"><span>Full name</span><input required value={fullName} onChange={event => setFullName(event.target.value)} placeholder="Full name" /></label>}
-            {isRegister && <>
-              <label className="login-field"><span>Phone number</span><input required type="tel" value={phone} onChange={event => setPhone(event.target.value)} placeholder="+250 7xx xxx xxx" /></label>
-              <div className="login-row split-row"><label className="login-field"><span>Age</span><input required type="number" min="10" max="100" value={age} onChange={event => setAge(event.target.value)} placeholder="Age" /></label><label className="login-field"><span>Sex</span><select required value={sex} onChange={event => setSex(event.target.value)}><option value="">Select sex</option><option value="FEMALE">Female</option><option value="MALE">Male</option><option value="OTHER">Other</option></select></label></div>
-              <label className="login-field"><span>Highest diploma</span><select required value={diploma} onChange={event => setDiploma(event.target.value)}><option value="">Select diploma</option><option value="PRIMARY">Primary education</option><option value="SECONDARY">Secondary education</option><option value="DIPLOMA">Healthcare diploma</option><option value="BACHELOR">Bachelor degree</option><option value="MASTER">Master degree</option><option value="OTHER">Other qualification</option></select></label>
-              <label className="login-field"><span>Primary language</span><select required value={languages} onChange={event => setLanguages(event.target.value)}><option value="">Select language</option><option value="KINYARWANDA">Kinyarwanda</option><option value="ENGLISH">English</option><option value="FRENCH">French</option><option value="OTHER">Other language</option></select></label>
-              <label className="login-field"><span>Identification number</span><input required value={identificationNumber} onChange={event => setIdentificationNumber(event.target.value)} placeholder="National ID or passport" /></label>
-              <label className="login-field"><span>Residence</span><select required value={residence} onChange={event => setResidence(event.target.value)}><option value="">Select residence</option><option value="KIGALI">Kigali City</option><option value="EASTERN">Eastern Province</option><option value="NORTHERN">Northern Province</option><option value="SOUTHERN">Southern Province</option><option value="WESTERN">Western Province</option><option value="OTHER">Outside Rwanda</option></select></label>
-              <label className="login-field"><span>Address</span><textarea required value={address} onChange={event => setAddress(event.target.value)} placeholder="Full address" rows={3} /></label>
-              <label className="login-field"><span>Country</span><select required value={country} onChange={event => setCountry(event.target.value)}><option value="Rwanda">Rwanda</option><option value="Burundi">Burundi</option><option value="DRC">Democratic Republic of Congo</option><option value="Uganda">Uganda</option><option value="Tanzania">Tanzania</option><option value="Other">Other country</option></select></label>
-            </>}
-            <label className="login-field"><span>Email address</span><input required type="email" value={email} onChange={event => setEmail(event.target.value)} placeholder="Email address" /></label>
-            {!isForgot && <label className="login-field"><span>Password</span><input required minLength={8} type="password" value={password} onChange={event => setPassword(event.target.value)} placeholder="Password" /></label>}
-            {isRegister && <label className="login-field"><span>Confirm password</span><input required minLength={8} type="password" value={passwordConfirmation} onChange={event => setPasswordConfirmation(event.target.value)} placeholder="Confirm password" /></label>}
-            {!isRegister && !isForgot && <div className="login-row"><label className="remember-box"><input type="checkbox" /><span>Remember me</span></label><Link to="/forgot-password" className="login-link">Forgot Password?</Link></div>}
-            {error && <p className="error-text">{error}</p>}
-            <button className="button login-button" type="submit" disabled={submitting || !isSupabaseConfigured}>{!isSupabaseConfigured ? 'Connect Supabase first' : submitting ? 'Please wait…' : isRegister ? 'Create account' : isForgot ? 'Send reset link' : 'Login'} <ArrowRight size={16} /></button>
-            {mode === 'login' && <div className="login-meta"><Link to="/register">Create account</Link></div>}
-            {mode === 'register' && <div className="login-meta"><Link to="/login">Already have an account?</Link></div>}
-            {mode === 'forgot' && <div className="login-meta"><Link to="/login">Back to login</Link></div>}
-          </form>
-        </div>
-      )}
-    </div>
+      </div>
+    ) : (
+      <div className={`auth-shell ${isRegister ? 'auth-shell--register' : 'auth-shell--simple'}`}>
+        {isRegister && (
+          <aside className="auth-visual-panel">
+            <div className="auth-panel-brand">
+              <Link to="/" className="brand auth-brand">{brand.logoUrl ? <img className="brand-logo-img" src={brand.logoUrl} alt="CP Giraneza Health" /> : <span className="brand-mark"><HeartPulse size={21} /></span>}<span>CP <b>Giraneza</b><small>HEALTH</small></span></Link>
+            </div>
+            <div className="auth-visual-content">
+              <div className="auth-kicker">Trusted healthcare access</div>
+              <h1>Create your account</h1>
+              <p>Join CP Giraneza Health today and access quality healthcare services with ease.</p>
+              <div className="auth-benefit-list">
+                <div className="auth-benefit-item"><ShieldCheck size={18} /><span>Secure &amp; Private</span></div>
+                <div className="auth-benefit-item"><Stethoscope size={18} /><span>Quality Care</span></div>
+                <div className="auth-benefit-item"><Clock3 size={18} /><span>24/7 Access</span></div>
+              </div>
+            </div>
+            <div className="auth-visual-footer">
+              <strong>Your health, our priority</strong>
+              <span>We are committed to providing compassionate and quality care.</span>
+            </div>
+          </aside>
+        )}
+
+        {!isRegister && (
+          <div className="auth-card login-card">
+            <div className="login-heading">{isForgot ? 'Reset your password' : 'Sign in to your account'}</div>
+            {!isSupabaseConfigured && <div className="error-text" role="status">Authentication is unavailable until Supabase is connected. Add `frontend/.env` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then restart Vite.</div>}
+            <form onSubmit={submit} className="login-form">
+              {!isForgot && <label className="login-field"><span>Email address</span><input required type="email" value={email} onChange={event => setEmail(event.target.value)} placeholder="Email address" /></label>}
+              {isForgot && <label className="login-field"><span>Email address</span><input required type="email" value={email} onChange={event => setEmail(event.target.value)} placeholder="Email address" /></label>}
+              {!isForgot && <label className="login-field"><span>Password</span><PasswordField required minLength={8} value={password} onChange={setPassword} placeholder="Password" label="Password" autoComplete="current-password" /></label>}
+              {!isRegister && !isForgot && <div className="login-row"><label className="remember-box"><input type="checkbox" /><span>Remember me</span></label><Link to="/forgot-password" className="login-link">Forgot Password?</Link></div>}
+              {error && <p className="error-text">{error}</p>}
+              <button className="button login-button" type="submit" disabled={submitting || !isSupabaseConfigured}>{!isSupabaseConfigured ? 'Connect Supabase first' : submitting ? 'Please wait…' : isRegister ? 'Create account' : isForgot ? 'Send reset link' : 'Login'} <ArrowRight size={16} /></button>
+              {mode === 'login' && <div className="login-meta"><Link to="/register">Create account</Link></div>}
+              {mode === 'forgot' && <div className="login-meta"><Link to="/login">Back to login</Link></div>}
+            </form>
+          </div>
+        )}
+
+        {isRegister && (
+          <div className="auth-card auth-register-card">
+            <div className="auth-card-header">
+              <div className="auth-welcome-banner">
+                <span className="auth-welcome-eyebrow">{enroll.welcomeEyebrow}</span>
+                <h1 className="auth-welcome-title">{enroll.welcomeTitle}</h1>
+                <p className="auth-welcome-text">{enroll.welcomeText}</p>
+              </div>
+              <span className="auth-security-pill"><ShieldCheck size={14} /> Your information is secure</span>
+              <h2>Create your account</h2>
+              <p>Fill in the information below to get started.</p>
+            </div>
+            {!isSupabaseConfigured && <div className="error-text" role="status">Authentication is unavailable until Supabase is connected. Add `frontend/.env` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then restart Vite.</div>}
+            <form onSubmit={submit} className="register-form">
+              <div className="register-form-section">
+                <div className="auth-section-header"><span>01</span><h3>Personal Information</h3></div>
+                <div className="auth-field-grid auth-field-grid--2">
+                  <label className="auth-field"><span>Full name</span><input required value={fullName} onChange={event => setFullName(event.target.value)} placeholder="Full name" /></label>
+                  <label className="auth-field auth-field--phone">
+                    <span>Phone number</span>
+                    <div className="auth-phone-field" aria-label="Phone number input">
+                      <div className="auth-phone-select-wrap" ref={phoneCountryRef}>
+                        <button type="button" className="auth-country-button" aria-expanded={phoneCountryOpen} aria-haspopup="listbox" onClick={() => setPhoneCountryOpen(!phoneCountryOpen)}>
+                          <span className="auth-country-flag">{phoneCountry.flag}</span>
+                          <span className="auth-country-name">{phoneCountry.name}</span>
+                          <span className="auth-country-dial">{phoneCountry.dialCode}</span>
+                          <ChevronDown size={14} className="auth-country-caret" />
+                        </button>
+                        {phoneCountryOpen && (
+                          <div className="auth-country-menu" role="listbox" aria-label="Select a country code">
+                            <div className="auth-country-search-wrap">
+                              <Search size={14} />
+                              <input
+                                value={phoneCountrySearch}
+                                onChange={(event) => setPhoneCountrySearch(event.target.value)}
+                                placeholder="Search country or code"
+                                aria-label="Search country"
+                              />
+                            </div>
+                            <div className="auth-country-options">
+                              {filteredPhoneCountries.map((countryOption) => (
+                                <button
+                                  key={countryOption.code}
+                                  type="button"
+                                  className={`auth-country-option${countryOption.code === phoneCountry.code ? ' selected' : ''}`}
+                                  onClick={() => {
+                                    setPhoneCountry(countryOption)
+                                    setPhoneCountryOpen(false)
+                                    setPhoneCountrySearch('')
+                                  }}
+                                >
+                                  <span>{countryOption.flag}</span>
+                                  <span className="auth-country-label">{countryOption.name}</span>
+                                  <span className="auth-country-code">{countryOption.dialCode}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <input
+                        required
+                        type="tel"
+                        value={phoneLocal}
+                        onChange={(event) => setPhoneLocal(formatLocalPhoneNumber(event.target.value))}
+                        placeholder={phoneCountry.code === 'RW' ? '78X XXX XXX' : 'Phone number'}
+                        aria-label="Phone number"
+                      />
+                    </div>
+                  </label>
+                  <label className="auth-field"><span>Age</span><input required type="number" min="10" max="100" value={age} onChange={event => setAge(event.target.value)} placeholder="Age" /></label>
+                  <label className="auth-field"><span>Sex</span><select required value={sex} onChange={event => setSex(event.target.value)}><option value="">Select sex</option><option value="FEMALE">Female</option><option value="MALE">Male</option><option value="OTHER">Other</option></select></label>
+                </div>
+              </div>
+
+              <div className="register-form-section">
+                <div className="auth-section-header"><span>02</span><h3>Professional Information</h3></div>
+                <div className="auth-field-grid auth-field-grid--2">
+                  <label className="auth-field"><span>Highest diploma</span><select required value={diploma} onChange={event => setDiploma(event.target.value)}><option value="">Select diploma</option><option value="PRIMARY">Primary education</option><option value="SECONDARY">Secondary education</option><option value="DIPLOMA">Healthcare diploma</option><option value="BACHELOR">Bachelor degree</option><option value="MASTER">Master degree</option><option value="OTHER">Other qualification</option></select></label>
+                  <label className="auth-field"><span>Primary language</span><select required value={languages} onChange={event => setLanguages(event.target.value)}><option value="">Select language</option><option value="KINYARWANDA">Kinyarwanda</option><option value="ENGLISH">English</option><option value="FRENCH">French</option><option value="OTHER">Other language</option></select></label>
+                </div>
+              </div>
+
+              <div className="register-form-section">
+                <div className="auth-section-header"><span>03</span><h3>Identification</h3></div>
+                <div className="auth-field-grid auth-field-grid--2">
+                  <label className="auth-field auth-field--full"><span>National ID or passport</span><input required value={identificationNumber} onChange={event => setIdentificationNumber(event.target.value)} placeholder="National ID or passport" /></label>
+                  <label className="auth-field"><span>Residence</span><select required value={residence} onChange={event => setResidence(event.target.value)}><option value="">Select residence</option><option value="KIGALI">Kigali City</option><option value="EASTERN">Eastern Province</option><option value="NORTHERN">Northern Province</option><option value="SOUTHERN">Southern Province</option><option value="WESTERN">Western Province</option><option value="OTHER">Outside Rwanda</option></select></label>
+                  <label className="auth-field auth-field--full"><span>Address</span><textarea required value={address} onChange={event => setAddress(event.target.value)} placeholder="Full address" rows={3} /></label>
+                  <label className="auth-field"><span>Country</span><select required value={country} onChange={event => setCountry(event.target.value)}><option value="Rwanda">Rwanda</option><option value="Burundi">Burundi</option><option value="DRC">Democratic Republic of Congo</option><option value="Uganda">Uganda</option><option value="Tanzania">Tanzania</option><option value="Other">Other country</option></select></label>
+                </div>
+              </div>
+
+              <div className="register-form-section">
+                <div className="auth-section-header"><span>04</span><h3>Account Security</h3></div>
+                <div className="auth-field-grid auth-field-grid--2">
+                  <label className="auth-field auth-field--full"><span>Email address</span><input required type="email" value={email} onChange={event => setEmail(event.target.value)} placeholder="Email address" /></label>
+                  <label className="auth-field"><span>Password</span><PasswordField required minLength={8} value={password} onChange={setPassword} placeholder="Password" label="Password" autoComplete="new-password" /></label>
+                  <label className="auth-field"><span>Confirm password</span><PasswordField required minLength={8} value={passwordConfirmation} onChange={setPasswordConfirmation} placeholder="Confirm password" label="Confirm password" autoComplete="new-password" /></label>
+                </div>
+              </div>
+
+              {error && <p className="error-text">{error}</p>}
+
+              <button className="button register-button" type="submit" disabled={submitting || !isSupabaseConfigured}>
+                {!isSupabaseConfigured ? 'Connect Supabase first' : submitting ? 'Please wait…' : 'CREATE ACCOUNT →'}
+              </button>
+
+              <div className="auth-footer-text">
+                Already have an account? <Link to="/login">Sign in</Link>
+              </div>
+            </form>
+          </div>
+        )}
+      </div>
+    )}
   </section>
 }
 function AuthFlow({ mode }: { mode: 'login' | 'register' | 'forgot' }) { return <AuthForm mode={mode} /> }
-function Auth({ mode }: { mode: 'login' | 'register' | 'forgot' }) { return <AuthFlow mode={mode} /> }
 function ResetPassword() {
   const [password, setPassword] = useState('')
   const [confirmation, setConfirmation] = useState('')
@@ -582,14 +867,25 @@ function ResetPassword() {
 
   return <section className="auth-page"><div className="auth-shell"><div className="login-title">CP Giraneza Health</div><div className="auth-card login-card">
     {updated ? <div className="success-message centered"><CheckCircle2 /><strong>Password updated</strong><span>Your password has been changed securely.</span><Link className="button button-primary" to="/login">Return to login <ArrowRight size={16} /></Link></div> : <><div className="login-heading">Create a new password</div><form onSubmit={submit} className="login-form">
-      <label className="login-field"><span>New password</span><input required minLength={8} type="password" value={password} onChange={event => setPassword(event.target.value)} placeholder="At least 8 characters" /></label>
-      <label className="login-field"><span>Confirm password</span><input required minLength={8} type="password" value={confirmation} onChange={event => setConfirmation(event.target.value)} placeholder="Confirm password" /></label>
+      <label className="login-field"><span>New password</span><PasswordField required minLength={8} value={password} onChange={setPassword} placeholder="At least 8 characters" label="New password" autoComplete="new-password" /></label>
+      <label className="login-field"><span>Confirm password</span><PasswordField required minLength={8} value={confirmation} onChange={setConfirmation} placeholder="Confirm password" label="Confirm password" autoComplete="new-password" /></label>
       {error && <p className="error-text">{error}</p>}
       <button className="button login-button" type="submit" disabled={submitting}>{submitting ? 'Updating…' : 'Update password'} <ArrowRight size={16} /></button>
     </form></>}
   </div></div></section>
 }
-function SocialLinks() { return <section className="social-strip"><div className="container social-strip-inner"><div><span className="eyebrow">Stay connected</span><strong>Care, learning and community updates.</strong></div><div className="social-links"><a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><FaInstagram /></a><a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn"><FaLinkedinIn /></a><a href="https://wa.me/250000000000" target="_blank" rel="noreferrer" aria-label="WhatsApp" title="WhatsApp"><FaWhatsapp /></a><a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><FaFacebookF /></a><a href="https://tiktok.com" target="_blank" rel="noreferrer" aria-label="TikTok" title="TikTok"><FaTiktok /></a><a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X" title="X"><FaXTwitter /></a></div></div></section> }
+type SocialLink = { label: string; href: string; icon: typeof FaInstagram }
+function buildSocialLinks(socials: ContactContent['socials']): SocialLink[] {
+  return [
+    { label: 'Instagram', href: socials.instagram || 'https://instagram.com', icon: FaInstagram },
+    { label: 'LinkedIn', href: socials.linkedin || 'https://linkedin.com', icon: FaLinkedinIn },
+    { label: 'WhatsApp', href: socials.whatsapp || 'https://wa.me/250000000000', icon: FaWhatsapp },
+    { label: 'Facebook', href: socials.facebook || 'https://facebook.com', icon: FaFacebookF },
+    { label: 'TikTok', href: socials.tiktok || 'https://tiktok.com', icon: FaTiktok },
+    { label: 'X', href: socials.x || 'https://x.com', icon: FaXTwitter }
+  ]
+}
+function SocialLinks() { const contact = useSiteContent('content.contact', CONTACT_DEFAULTS); const links = buildSocialLinks(contact.socials); return <section className="social-strip"><div className="container social-strip-inner"><div><span className="eyebrow">Stay connected</span><strong>Care, learning and community updates.</strong></div><div className="social-links">{links.map((link) => <a key={link.label} href={link.href} target="_blank" rel="noreferrer" aria-label={link.label} title={link.label}><link.icon /></a>)}</div></div></section> }
 function Dashboard() {
   const navigate = useNavigate()
   const [authorized, setAuthorized] = useState(false)
@@ -1625,8 +1921,8 @@ function StudentSettings() {
         <form className="student-form" onSubmit={handlePasswordUpdate}>
           <div className="student-panel-header"><h4>Security</h4></div>
           <div className="student-form-grid">
-            <label><span>New password</span><input type="password" value={newPassword} onChange={event => setNewPassword(event.target.value)} placeholder="At least 8 characters" /></label>
-            <label><span>Confirm password</span><input type="password" value={confirmPassword} onChange={event => setConfirmPassword(event.target.value)} placeholder="Confirm password" /></label>
+            <label><span>New password</span><PasswordField value={newPassword} onChange={setNewPassword} placeholder="At least 8 characters" label="New password" autoComplete="new-password" /></label>
+            <label><span>Confirm password</span><PasswordField value={confirmPassword} onChange={setConfirmPassword} placeholder="Confirm password" label="Confirm password" autoComplete="new-password" /></label>
           </div>
           {error && <div className="student-alert error">{error}</div>}
           {success && <div className="student-alert success">{success}</div>}
@@ -1636,85 +1932,7 @@ function StudentSettings() {
     </div>
   )
 }
-type RegistrationCourse = { id: string; title: string }
-type UserNotification = { id: string; title: string; message: string; type: string; read_at?: string; created_at: string }
-type UserEnrollment = { id: string; status: string; created_at: string; courses?: { title?: string } }
-
-function RegistrationWorkspace() {
-  const [profile, setProfile] = useState<{ id: string; full_name: string; phone?: string } | null>(null)
-  const [courses, setCourses] = useState<RegistrationCourse[]>([])
-  const [enrollments, setEnrollments] = useState<UserEnrollment[]>([])
-  const [notifications, setNotifications] = useState<UserNotification[]>([])
-  const [loading, setLoading] = useState(true)
-  const [submitting, setSubmitting] = useState(false)
-  const [message, setMessage] = useState('')
-  const [error, setError] = useState('')
-
-  const load = async () => {
-    if (!supabase) return
-    const currentProfile = await getCurrentProfile()
-    if (!currentProfile) return
-    setProfile(currentProfile)
-    const [courseResult, enrollmentResult, notificationResult] = await Promise.all([
-      supabase.from('courses').select('id,title').eq('is_published', true).order('title'),
-      supabase.from('enrollments').select('id,status,created_at,courses(title)').eq('student_id', currentProfile.id).order('created_at', { ascending: false }),
-      supabase.from('notifications').select('id,title,message,type,read_at,created_at').eq('user_id', currentProfile.id).order('created_at', { ascending: false })
-    ])
-    if (courseResult.error || enrollmentResult.error || notificationResult.error) throw courseResult.error ?? enrollmentResult.error ?? notificationResult.error
-    setCourses(courseResult.data ?? [])
-    setEnrollments(enrollmentResult.data as UserEnrollment[] ?? [])
-    setNotifications(notificationResult.data ?? [])
-  }
-
-  useEffect(() => { load().catch(() => setError('Unable to load your registration workspace.')).finally(() => setLoading(false)) }, [])
-
-  const submitRegistration = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!supabase || !profile) return
-    setError(''); setMessage(''); setSubmitting(true)
-    const fields = new FormData(event.currentTarget)
-    const courseId = String(fields.get('course_id'))
-    const phone = String(fields.get('phone')).trim()
-    const location = String(fields.get('location')).trim()
-    const note = String(fields.get('note')).trim()
-    try {
-      const { data: existing, error: existingError } = await supabase.from('enrollments').select('id').eq('student_id', profile.id).eq('course_id', courseId).in('status', ['PENDING', 'APPROVED']).maybeSingle()
-      if (existingError) throw existingError
-      if (existing) { setError('You already have an active registration for this program.'); return }
-      const { error: profileError } = await supabase.from('profiles').update({ phone, updated_at: new Date().toISOString() }).eq('id', profile.id)
-      if (profileError) throw profileError
-      const { error: enrollmentError } = await supabase.from('enrollments').insert({ student_id: profile.id, course_id: courseId, application_note: `Location: ${location}\n\nRegistration details: ${note}` })
-      if (enrollmentError) throw enrollmentError
-      setMessage('Registration submitted. The admin team will review it and notify you of their decision.')
-      event.currentTarget.reset()
-      await load()
-    } catch (submissionError: unknown) {
-      setError(submissionError instanceof Error ? submissionError.message : 'Unable to submit your registration.')
-    } finally { setSubmitting(false) }
-  }
-
-  if (loading) return <div className="dash-panel"><p className="muted">Loading your registration workspace…</p></div>
-  return <div className="dash-columns" style={{ gridTemplateColumns: 'minmax(0, 1.35fr) minmax(280px, .85fr)' }}>
-    <div className="dash-panel">
-      <div className="panel-title"><h2>Complete your registration</h2><span className="kicker">Required information</span></div>
-      <p className="muted">Submit one program registration at a time. Your request is sent directly to the admin team for approval.</p>
-      {courses.length === 0 ? <p className="error-text">No published programs are available yet. Please contact support.</p> : <form onSubmit={submitRegistration} className="registration-request-form">
-        <label>Full name<input value={profile?.full_name ?? ''} disabled /></label>
-        <label>Phone number<input name="phone" type="tel" defaultValue={profile?.phone ?? ''} required placeholder="Your phone number" /></label>
-        <label>Program<select name="course_id" required defaultValue=""><option value="" disabled>Select a program</option>{courses.map(course => <option key={course.id} value={course.id}>{course.title}</option>)}</select></label>
-        <label>Location<input name="location" required placeholder="District / city" /></label>
-        <label>Why are you registering?<textarea name="note" required rows={4} placeholder="Tell us briefly about your learning goal" /></label>
-        {error && <p className="error-text">{error}</p>}{message && <p className="success-text">{message}</p>}
-        <button className="button button-primary" type="submit" disabled={submitting}>{submitting ? 'Submitting…' : 'Submit registration'} <ArrowRight size={16} /></button>
-      </form>}
-      {enrollments.length > 0 && <div style={{ marginTop: 28 }}><div className="panel-title"><h2>Your registrations</h2></div>{enrollments.map(item => <div className="quick-link" key={item.id}><BookOpen size={18} /><span><strong>{item.courses?.title ?? 'Program registration'}</strong><small>{item.status} · submitted {new Date(item.created_at).toLocaleDateString()}</small></span></div>)}</div>}
-    </div>
-    <div className="dash-panel"><div className="panel-title"><h2>Notifications</h2><Bell size={18} /></div>{notifications.length === 0 ? <p className="muted">You will receive an update here after the admin reviews your registration.</p> : notifications.map(notification => <div className="activity-list" key={notification.id}><p><Bell size={16} /><span><strong>{notification.title}</strong><br />{notification.message}</span></p></div>)}</div>
-  </div>
-}
-
-function DashboardShell({ admin }: { admin: boolean }) { const navigate = useNavigate(); const [toast, setToast] = useState(false); const items = admin ? ['Dashboard', 'Users', 'Courses', 'Schedules', 'Enrollments', 'Certificates', 'News', 'Gallery', 'Careers', 'Messages', 'Settings'] : ['Overview', 'My profile', 'My courses', 'My enrollments', 'Training schedule', 'Certificates', 'Notifications', 'Settings']; const signOut = async () => { await supabase?.auth.signOut(); navigate('/login', { replace: true }) }; return <section className="dashboard-page"><div className="dashboard-layout"><aside className="dashboard-side"><Link className="brand" to="/"><span className="brand-mark"><HeartPulse size={21} /></span><span>CP <b>Giraneza</b><small>HEALTH</small></span></Link><div className="side-role">{admin ? 'Admin workspace' : 'Student workspace'}</div><nav>{items.map((item, i) => <button className={i === 0 ? 'selected' : ''} key={item} onClick={() => setToast(true)}>{i === 0 ? <LayoutDashboard size={17} /> : <BookOpen size={17} />}{item}</button>)}</nav><button className="logout" onClick={signOut}><X size={16} /> Sign out</button></aside><div className="dashboard-main"><div className="dash-top"><div><span className="eyebrow">{admin ? 'Operations overview' : 'Good morning'}</span><h1>{admin ? 'Keep care moving forward.' : 'Welcome to your workspace.'}</h1></div><div className="dash-user"><Bell size={19} /><span>{admin ? 'Admin' : 'Student'} account</span></div></div><div className="dashboard-stats">{(admin ? [['Total users', '—'], ['Active courses', '4'], ['Pending enrollments', '—'], ['Home-care requests', '—']] : [['Registration', 'New'], ['Admin review', 'Pending'], ['Notifications', 'Live'], ['Status', 'Submit below']]).map(([l, v]) => <div className="dash-stat" key={l}><small>{l}</small><strong>{v}</strong><span><ArrowRight size={14} /> View details</span></div>)}</div>{admin ? <div className="dash-columns"><div className="dash-panel"><div className="panel-title"><h2>Recent activity</h2><span className="kicker">Live workspace</span></div><div className="activity-list"><p><CheckCircle2 /> Database connection ready for Supabase data.</p><p><ShieldCheck /> Role-based access is enforced in the database schema.</p><p><Bell /> Notifications will appear here as workflows are connected.</p></div></div></div> : <RegistrationWorkspace />}</div></div>{toast && <button className="toast" onClick={() => setToast(false)}><CheckCircle2 size={17} /> Connected section ready. Close</button>}</section> }
-function SimpleForm({ fields, button, onSubmit }: { fields: string[]; button: string; onSubmit: (data: FormData) => Promise<void> | void }) {
+function SimpleForm({ fields, button, onSubmit, selectFields = {} }: { fields: string[]; button: string; onSubmit: (data: FormData) => Promise<void> | void; selectFields?: Record<string, { placeholder: string; options: string[] }> }) {
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -1725,9 +1943,9 @@ function SimpleForm({ fields, button, onSubmit }: { fields: string[]; button: st
     catch (submissionError: unknown) { setError(submissionError instanceof Error ? submissionError.message : 'Unable to submit this form.') }
     finally { setSubmitting(false) }
   }
-  return <form onSubmit={submit}>{fields.map((field, i) => <label key={field}>{field}{i === 0 || i === 1 ? <span className="required">*</span> : null}{field.toLowerCase().includes('message') || field.toLowerCase().includes('idea') || field.toLowerCase().includes('help') || field.toLowerCase().includes('cover') ? <textarea name={field} required={i < 2} placeholder={field} rows={4} /> : <input name={field} required={i < 2} type={field.toLowerCase().includes('email') ? 'email' : field.toLowerCase().includes('date') ? 'date' : field.toLowerCase().includes('password') ? 'password' : 'text'} placeholder={field} />}</label>)}{error && <p className="error-text">{error}</p>}<button className="button button-primary" type="submit" disabled={submitting}>{submitting ? 'Sending…' : button} <ArrowRight size={16} /></button></form>
+  return <form onSubmit={submit}>{fields.map((field, i) => <label key={field}>{field}{i === 0 || i === 1 ? <span className="required">*</span> : null}{selectFields[field] ? <select name={field} required={i < 2} defaultValue=""><option value="" disabled>{selectFields[field].placeholder}</option>{selectFields[field].options.map(option => <option key={option} value={option}>{option}</option>)}</select> : field.toLowerCase().includes('message') || field.toLowerCase().includes('idea') || field.toLowerCase().includes('help') || field.toLowerCase().includes('cover') ? <textarea name={field} required={i < 2} placeholder={field} rows={4} /> : <input name={field} required={i < 2} type={field.toLowerCase().includes('email') ? 'email' : field.toLowerCase().includes('date') ? 'date' : field.toLowerCase().includes('password') ? 'password' : 'text'} placeholder={field} />}</label>)}{error && <p className="error-text">{error}</p>}<button className="button button-primary" type="submit" disabled={submitting}>{submitting ? 'Sending…' : button} <ArrowRight size={16} /></button></form>
 }
 function CTA() { return <section className="cta"><div className="container cta-inner"><div><div className="eyebrow">Your next step</div><h2>Make room for better care.</h2><p>Explore a program, ask a question or tell us how we can support your work.</p></div><Link className="button button-light" to="/contact">Talk to our team <ArrowRight size={16} /></Link></div></section> }
 function EmptyState({ text }: { text: string }) { return <div className="empty-state"><Search size={24} /><p>{text}</p></div> }
 function NotFound() { return <PageIntro eyebrow="404" title="This page has moved." text="The link you followed does not point to an available page. Let’s get you back to something useful." /> }
-function Footer() { return <footer><div className="container footer-grid"><div className="footer-brand"><Link to="/" className="brand"><span className="brand-mark"><HeartPulse size={21} /></span><span>CP <b>Giraneza</b><small>HEALTH</small></span></Link><p>Empowering competence, inspiring care, transforming communities.</p></div><div><h4>Explore</h4><Link to="/courses">Programs</Link><Link to="/home-care">Home care</Link><Link to="/careers">Careers</Link><Link to="/news">News</Link></div><div><h4>Support</h4><Link to="/contact">Contact</Link><Link to="/faq">FAQ</Link><Link to="/partnership">Partnerships</Link><Link to="/verify-certificate">Verify certificate</Link></div><div><h4>Connect</h4><span>Kigali, Rwanda</span><span>hello@cpgiranezahealth.org</span><span>Mon - Fri, 8:00 - 17:00</span></div></div><div className="container footer-bottom"><span>© 2026 CP Giraneza Health</span><span>Privacy · Terms · Built for better care</span></div></footer> }
+function Footer() { const footer = useSiteContent('content.footer', FOOTER_DEFAULTS); const brand = useSiteContent('brand', BRAND_DEFAULTS); return <footer><div className="container footer-grid"><div className="footer-brand"><Link to="/" className="brand">{brand.logoUrl ? <img className="brand-logo-img" src={brand.logoUrl} alt="CP Giraneza Health" /> : <span className="brand-mark"><HeartPulse size={21} /></span>}<span>CP <b>Giraneza</b><small>HEALTH</small></span></Link><p>{footer.description}</p></div><div><h4>Explore</h4><Link to="/courses">Programs</Link><Link to="/home-care">Home care</Link><Link to="/careers">Careers</Link><Link to="/news">News</Link></div><div><h4>Support</h4><Link to="/contact">Contact</Link><Link to="/faq">FAQ</Link><Link to="/partnership">Partnerships</Link><Link to="/verify-certificate">Verify certificate</Link></div><div><h4>Connect</h4><span>{footer.location}</span><a href={`mailto:${footer.email}`}>{footer.email}</a><span>{footer.website}</span><span>{footer.hours}</span></div></div><div className="container footer-bottom"><span>{footer.copyright}</span><span>{footer.legal}</span></div></footer> }

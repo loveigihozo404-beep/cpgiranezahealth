@@ -276,12 +276,38 @@ export async function isAdmin(): Promise<boolean> {
   return isAdminRole(profile?.role)
 }
 
+/**
+ * Extracts a human-readable message from ANY error shape.
+ * Supabase/PostgREST errors are PLAIN OBJECTS ({ message, code, details, hint }),
+ * NOT Error instances, so `err instanceof Error ? err.message : fallback` always
+ * hides the real cause. This helper surfaces the true message and is paired with
+ * console.error() at the call site so developers still see the full object.
+ */
+export function getErrorMessage(err: unknown, fallback = 'The operation failed. Please try again.'): string {
+  if (err instanceof Error) return err.message || fallback
+  if (typeof err === 'string') return err
+  if (err && typeof err === 'object') {
+    const e = err as { message?: string; error_description?: string; code?: string; details?: string; hint?: string }
+    if (e.message) return e.code ? `${e.message} (${e.code})` : e.message
+    if (e.error_description) return e.error_description
+    if (e.code) return `${e.code}${e.details ? `: ${e.details}` : ''}`
+  }
+  return fallback
+}
+
+/**
+ * Best-effort audit logging. This MUST NOT fail the user's real operation:
+ * the data write has already succeeded by the time we log. A missing/renamed
+ * write_audit_log() RPC (e.g. before backend/admin_upgrade.sql is applied)
+ * is recorded to the console for diagnosis instead of thrown, so an
+ * otherwise-successful Save/Delete no longer surfaces as "failed".
+ */
 export async function logAudit(
   action: string,
   entity: string,
   entityId?: string,
   metadata: Record<string, unknown> = {}
-) {
+): Promise<void> {
   if (!supabase) return
   const { error } = await supabase.rpc('write_audit_log', {
     p_action: action,
@@ -289,5 +315,7 @@ export async function logAudit(
     p_entity_id: entityId ?? null,
     p_metadata: metadata,
   })
-  if (error) throw error
+  if (error) {
+    console.error(`[audit] write_audit_log failed for ${action} on ${entity} (non-fatal):`, getErrorMessage(error), error)
+  }
 }

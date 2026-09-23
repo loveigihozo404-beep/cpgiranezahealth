@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-export type StorageBucket = 'course-files' | 'certificates' | 'gallery' | 'career-files' | 'profile-images' | 'homecare-files'
+export type StorageBucket = 'course-files' | 'certificates' | 'gallery' | 'career-files' | 'profile-images' | 'homecare-files' | 'admission-files'
 export type UploadedFile = { path: string; name: string; type: string; size: number }
 
 const SAFE_NAME = /^[a-z0-9][a-z0-9._-]*$/i

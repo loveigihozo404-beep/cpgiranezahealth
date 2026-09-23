@@ -1,0 +1,13 @@
+{
+  "name": "cpgiraneza-health-supabase-functions",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Supabase Edge Functions (Deno runtime). Not part of the frontend Vite/tsc build.",
+  "scripts": {
+    "check:ts": "tsc -p tsconfig.json",
+    "check:deno": "deno check ai-assistant/index.ts"
+  },
+  "devDependencies": {
+    "@types/deno": "^2.7.0"
+  }
+}

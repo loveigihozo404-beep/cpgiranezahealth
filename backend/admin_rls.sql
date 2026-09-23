@@ -160,7 +160,7 @@ create policy "admin manage categories" on public.course_categories
 -- ============================================================
 -- Step 1: Create the admin user in Supabase Auth Dashboard
 --   Authentication > Users > Invite User
---   Email: use your real admin email (e.g. admin@cpgiranezahealth.org)
+--   Email: use your real admin email (e.g. admin@cpgiranezahealth.rw)
 --   OR use the Supabase Auth API / CLI:
 --
 --   Create the user in the Supabase dashboard or CLI with a strong password
@@ -171,7 +171,7 @@ create policy "admin manage categories" on public.course_categories
 --
 -- UPDATE public.profiles
 -- SET role = 'ADMIN', full_name = 'giranezahealth', updated_at = now()
--- WHERE email = 'admin@cpgiranezahealth.org';
+-- WHERE email = 'admin@cpgiranezahealth.rw';
 --
 -- Step 3: The admin can then log in at /login using their Supabase credentials.
 --
