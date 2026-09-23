@@ -250,7 +250,7 @@ export const ADMISSIONS_DEFAULTS: AdmissionsContent = {
 }
 
 export const BRAND_DEFAULTS: BrandContent = {
-  logoUrl: '',
+  logoUrl: '/cp-giraneza-health-logo.png',
 }
 
 // ── Key registry (used by the Admin > Website Content editors) ──────────────

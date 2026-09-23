@@ -1,0 +1,221 @@
+/* ============================================================
+   GLOBAL THEME LAYER — CP Giraneza Health
+   ------------------------------------------------------------
+   ONE global light/dark system for the entire public website.
+   Light mode = the existing site, untouched (this file only adds
+   rules scoped to [data-theme="dark"], plus the logo chip and the
+   theme-toggle control). Dark mode layers on top via higher
+   specificity + being imported last. Admin keeps its own isolated
+   dark palette (admin.css) and is deliberately not re-themed here.
+   Persistence is handled by lib/theme.ts + the no-flash script in
+   index.html; this file only paints the selected theme.
+   ============================================================ */
+
+/* ── Design tokens (flip the shared variables for dark) ─────────────────── */
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --navy:#dcefe9;   /* was a dark ink; now light text */
+  --ink:#e7f2f0;
+  --muted:#9fbcc2;
+  --blue:#3ab4cd;   /* brighter teal for readable links/accents on dark */
+  --cyan:#14b8c5;
+  --mint:#0e4a52;   /* soft teal chips */
+  --line:#1c4d5e;
+  --soft:#0a2a34;
+  --white:#fff;
+  --shadow:0 20px 55px rgba(0,0,0,.5);
+  background:#071e27;
+}
+[data-theme="dark"] body{background:#071e27;color:var(--ink)}
+[data-theme="dark"] .app-shell{background:#071e27;color:var(--ink)}
+[data-theme="dark"] ::selection{background:rgba(20,184,197,.35);color:#eafffb}
+
+/* ── Header / navigation ────────────────────────────────────────────────── */
+[data-theme="dark"] .topbar{background:rgba(9,33,43,.9);border-bottom-color:rgba(255,255,255,.08)}
+[data-theme="dark"] .main-nav a,[data-theme="dark"] .login-link,[data-theme="dark"] .nav-dropdown-trigger{color:#a7c4cb}
+[data-theme="dark"] .main-nav a:hover,[data-theme="dark"] .main-nav a.active,[data-theme="dark"] .login-link:hover,[data-theme="dark"] .nav-dropdown-trigger:hover,[data-theme="dark"] .nav-dropdown-trigger.active{color:var(--cyan)}
+[data-theme="dark"] .icon-button{color:#cfe6e1}
+@media(max-width:850px){[data-theme="dark"] .main-nav{background:#0a2a34;box-shadow:0 18px 30px rgba(0,0,0,.5)}}
+
+/* Nav dropdown (Admissions) */
+[data-theme="dark"] .nav-dropdown-menu{background:#0e3644;border-color:var(--line);box-shadow:0 24px 55px rgba(0,0,0,.55)}
+[data-theme="dark"] .nav-dropdown-menu a{color:#cfe6e1}
+[data-theme="dark"] .nav-dropdown-menu a:hover{background:#14424f;color:#eafffb}
+[data-theme="dark"] .nav-dropdown-menu a.active{background:#17495a;color:#fff}
+@media(max-width:850px){[data-theme="dark"] .nav-dropdown-menu{background:transparent;border-left-color:var(--line)}[data-theme="dark"] .nav-dropdown-menu a:hover{background:transparent}}
+
+/* ── Restore intentionally-dark bands that used var(--navy) as a background ─ */
+[data-theme="dark"] .brand-mark,[data-theme="dark"] .stats-band,[data-theme="dark"] .button-dark,[data-theme="dark"] .dashboard-side,[data-theme="dark"] .toast,[data-theme="dark"] .student-sidebar,[data-theme="dark"] .ai-lang-btn.active,[data-theme="dark"] .ai-fab-tip,[data-theme="dark"] .adm-step-num,[data-theme="dark"] .adm-subnav a.active,[data-theme="dark"] .adm-chip.active{background:#082b3a}
+[data-theme="dark"] .button-light{color:#082b3a}
+[data-theme="dark"] .contact-socials a:hover{color:#082b3a}
+[data-theme="dark"] .stats-band,[data-theme="dark"] .button-dark,[data-theme="dark"] .toast,[data-theme="dark"] .dashboard-side,[data-theme="dark"] .student-sidebar,[data-theme="dark"] .adm-subnav a.active,[data-theme="dark"] .adm-chip.active{color:#fff}
+[data-theme="dark"] .brand-mark,[data-theme="dark"] .adm-step-num,[data-theme="dark"] .ai-fab-tip{color:#7fe0d7}
+[data-theme="dark"] .ai-lang-btn.active{color:#fff;border-color:#082b3a}
+[data-theme="dark"] .partner-monogram,[data-theme="dark"] .leadership-avatar{background:linear-gradient(135deg,#0a3543,#0a6b7a)}
+[data-theme="dark"] .avatar-stack i{border-color:#0d3341}
+[data-theme="dark"] .avatar-stack i:nth-child(3){background:#0d3341;color:var(--cyan);border-color:#1c4d5e}
+
+/* ── Home hero + light page bands ───────────────────────────────────────── */
+[data-theme="dark"] .hero{background:radial-gradient(circle at 84% 20%,rgba(20,184,197,.16),transparent 30%),linear-gradient(125deg,#082733 0%,#0a2f3d 55%,#0c3a45 100%)}
+[data-theme="dark"] .hero:before{background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px)}
+[data-theme="dark"] .hero-visual:after{background:linear-gradient(135deg,rgba(0,0,0,.18),rgba(0,0,0,.5))}
+[data-theme="dark"] .split-section{background:#0b2c37}
+[data-theme="dark"] .home-stat-strip{background:#0b2c37;border-bottom-color:var(--line)}
+[data-theme="dark"] .home-stat-grid div{border-right-color:#164453}
+[data-theme="dark"] .social-strip{background:#0b2c37;border-top-color:var(--line);border-bottom-color:var(--line)}
+[data-theme="dark"] .section.soft{background:#0a2833}
+
+/* ── Cards & panels (generic light surfaces) ────────────────────────────── */
+[data-theme="dark"] .course-card,[data-theme="dark"] .news-card,[data-theme="dark"] .service-card,[data-theme="dark"] .info-panel,[data-theme="dark"] .form-panel,[data-theme="dark"] .values-grid>div,[data-theme="dark"] .verify-box,[data-theme="dark"] .job-row,[data-theme="dark"] .dash-stat,[data-theme="dark"] .dash-panel,[data-theme="dark"] .partner-card,[data-theme="dark"] .about-mv-card,[data-theme="dark"] .leadership-card,[data-theme="dark"] .catalog-summary,[data-theme="dark"] .filter-bar,[data-theme="dark"] .search-field,[data-theme="dark"] .home-story-card{background:#0d3341;border-color:var(--line)}
+[data-theme="dark"] .catalog-summary{background:linear-gradient(135deg,#0e3644,#0b2c37)}
+[data-theme="dark"] .catalog-metrics span{background:#0b2c37;border-color:var(--line)}
+[data-theme="dark"] .badge{background:#0e4a52;color:#7fe0d7}
+[data-theme="dark"] .info-panel>div{border-top-color:var(--line)}
+[data-theme="dark"] .empty-state{border-color:var(--line)}
+[data-theme="dark"] .verify-result.valid{background:#0e3d33;color:#79e6c4}
+[data-theme="dark"] .verify-result.invalid{background:#3d2320;color:#f0a99e}
+[data-theme="dark"] .floating-card{background:rgba(13,51,65,.94)}
+[data-theme="dark"] .social-links a{background:#fff;border-color:#fff}
+[data-theme="dark"] .social-links a:hover{background:#0a6b7a;border-color:#0a6b7a;color:#fff}
+
+/* ── Forms & inputs (light surfaces) ────────────────────────────────────── */
+[data-theme="dark"] .form-panel input,[data-theme="dark"] .form-panel textarea,[data-theme="dark"] .form-panel select,[data-theme="dark"] .auth-card input,[data-theme="dark"] .auth-card textarea,[data-theme="dark"] .auth-card select,[data-theme="dark"] .verify-form input,[data-theme="dark"] .filter-bar select,[data-theme="dark"] .search-field input,[data-theme="dark"] .dash-panel input{background:#0a2a34;border-color:var(--line);color:var(--ink)}
+[data-theme="dark"] .form-panel input::placeholder,[data-theme="dark"] .form-panel textarea::placeholder,[data-theme="dark"] .auth-card input::placeholder,[data-theme="dark"] .search-field input::placeholder,[data-theme="dark"] .verify-form input::placeholder{color:#7f9ba2}
+[data-theme="dark"] .form-panel select option,[data-theme="dark"] .auth-card select option,[data-theme="dark"] .filter-bar select option,[data-theme="dark"] .dash-panel select option{background:#0d3341;color:var(--ink)}
+[data-theme="dark"] .auth-card input:focus,[data-theme="dark"] .form-panel input:focus,[data-theme="dark"] .form-panel textarea:focus,[data-theme="dark"] .form-panel select:focus,[data-theme="dark"] .auth-card select:focus{background:#0f3a49}
+
+/* Contact + service form cards (glass) */
+[data-theme="dark"] .contact-form-card{background:rgba(12,45,57,.94);border-color:var(--line)}
+[data-theme="dark"] .contact-success{background:rgba(12,45,57,.94)}
+[data-theme="dark"] .contact-success strong{color:var(--navy)}
+[data-theme="dark"] .contact-success span{color:var(--muted)}
+[data-theme="dark"] .app-shell:has(.service-grid) .form-panel form{background:#0a2a34}
+[data-theme="dark"] .app-shell:has(.service-grid) .form-panel input,[data-theme="dark"] .app-shell:has(.service-grid) .form-panel textarea,[data-theme="dark"] .app-shell:has(.service-grid) .form-panel select{background:#0d3341}
+
+/* Careers application form (light card variants) */
+[data-theme="dark"] .career-copy-card{background:#0c2f3a;border-color:var(--line)}
+[data-theme="dark"] .career-copy-card p{color:#a9c4ca}
+[data-theme="dark"] .career-application-panel{background:linear-gradient(180deg,rgba(8,32,41,.5),rgba(8,32,41,.72)),url('https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1200&q=88') center/cover no-repeat}
+[data-theme="dark"] .career-form-heading{border-bottom-color:var(--line)}
+[data-theme="dark"] .career-form-mark{background:#0e4a52}
+
+/* Enrollment / auth confirmation card (light glass over dark image) */
+[data-theme="dark"] .confirmation-card{background:rgba(13,51,65,.96);border-color:var(--line)}
+[data-theme="dark"] .confirmation-card .success-message{color:var(--ink)}
+[data-theme="dark"] .confirmation-card .success-message strong,[data-theme="dark"] .confirmation-card h1{color:var(--navy)}
+[data-theme="dark"] .confirmation-card .success-message>span{color:var(--muted)}
+
+/* ── Student portal ─────────────────────────────────────────────────────── */
+[data-theme="dark"] .student-dashboard-page{background:#071e27}
+[data-theme="dark"] .student-topbar{background:#0a2a34;border-bottom-color:var(--line)}
+[data-theme="dark"] .student-topbar-icon{background:#0d3341;border-color:var(--line)}
+[data-theme="dark"] .student-badge{border-color:#0a2a34}
+[data-theme="dark"] .student-avatar{background:#0e4a52;color:#7fe0d7}
+[data-theme="dark"] .student-metric-card,[data-theme="dark"] .student-panel,[data-theme="dark"] .student-course-card,[data-theme="dark"] .student-certificate-card,[data-theme="dark"] .student-schedule-item,[data-theme="dark"] .student-settings-card{background:#0d3341;border-color:var(--line)}
+[data-theme="dark"] .student-form label{color:#a9c4ca}
+[data-theme="dark"] .student-form input,[data-theme="dark"] .student-form select,[data-theme="dark"] .student-form textarea{background:#0a2a34;border-color:var(--line);color:var(--ink)}
+[data-theme="dark"] .student-form input:disabled{background:#0b2c37;color:#7f9ba2}
+[data-theme="dark"] .student-mini-list{border-top-color:var(--line)}
+[data-theme="dark"] .student-mini-item{border-bottom-color:var(--line)}
+[data-theme="dark"] .student-status-badge{background:#123f4d;color:#a9c4ca}
+[data-theme="dark"] .student-notification-item{background:#0d3341}
+[data-theme="dark"] .student-notification-item.read{background:#0b2c37}
+[data-theme="dark"] .student-notification-feed .student-notification-item{background:#0d3341;border-color:var(--line)}
+[data-theme="dark"] .student-table th{border-bottom-color:var(--line);color:#8fb0b7}
+[data-theme="dark"] .student-table td{border-bottom-color:var(--line);color:#a9c4ca}
+[data-theme="dark"] .student-mobile-trigger{background:#0d3341;color:var(--cyan)}
+[data-theme="dark"] .student-card-actions{border-top-color:var(--line)}
+[data-theme="dark"] .student-pill{background:#0e4a52;color:#a9e6da}
+[data-theme="dark"] .pill-primary{background:#0e4a52;color:#7fe0d7}
+
+/* ── Admissions ─────────────────────────────────────────────────────────── */
+[data-theme="dark"] .adm-shell{background:#071e27}
+[data-theme="dark"] .adm-subnav{background:#0a2a34;border-bottom-color:var(--line)}
+[data-theme="dark"] .adm-subnav a{color:#a7c4cb}
+[data-theme="dark"] .adm-subnav a:hover{background:#0d3341;border-color:var(--line);color:var(--cyan)}
+[data-theme="dark"] .adm-section.soft{background:#0b2c37}
+[data-theme="dark"] .adm-card,[data-theme="dark"] .adm-level-card,[data-theme="dark"] .adm-step-row,[data-theme="dark"] .adm-doc-item,[data-theme="dark"] .adm-filter,[data-theme="dark"] .adm-chip,[data-theme="dark"] .adm-programme-card,[data-theme="dark"] .adm-wizard-panel,[data-theme="dark"] .adm-step-list,[data-theme="dark"] .adm-status-card,[data-theme="dark"] .adm-review-block,[data-theme="dark"] .adm-check-item,[data-theme="dark"] .adm-account-row,[data-theme="dark"] .adm-recent-item,[data-theme="dark"] .adm-success-card{background:#0d3341;border-color:var(--line)}
+[data-theme="dark"] .adm-filter select,[data-theme="dark"] .adm-field input,[data-theme="dark"] .adm-field select,[data-theme="dark"] .adm-field textarea{background:#0a2a34;border-color:var(--line);color:var(--ink)}
+[data-theme="dark"] .adm-field input::placeholder,[data-theme="dark"] .adm-field textarea::placeholder{color:#7f9ba2}
+[data-theme="dark"] .adm-filter select option,[data-theme="dark"] .adm-field select option{background:#0d3341;color:var(--ink)}
+[data-theme="dark"] .adm-pill{background:#0e4a52;color:#8ee7da}
+[data-theme="dark"] .adm-pill.alt{background:#0c3742;color:#a9c4ca}
+[data-theme="dark"] .adm-pill.warm{background:#3d3320;color:#e9c88a}
+[data-theme="dark"] .adm-programme-meta span{background:#0b2c37;color:#a9c4ca}
+[data-theme="dark"] .adm-programme-details{border-top-color:var(--line)}
+[data-theme="dark"] .adm-selected-tag{background:#0e4a52;color:#8ee7da}
+[data-theme="dark"] .adm-selected-tag.second{background:#0c3742;color:#a9c4ca}
+[data-theme="dark"] .adm-date-row{border-bottom-color:var(--line)}
+[data-theme="dark"] .adm-step-item{color:#a7c4cb}
+[data-theme="dark"] .adm-step-item:hover{background:#0b2c37}
+[data-theme="dark"] .adm-step-item i{border-color:var(--line)}
+[data-theme="dark"] .adm-wizard-actions{border-top-color:var(--line)}
+[data-theme="dark"] .adm-status-meta{border-top-color:var(--line)}
+[data-theme="dark"] .adm-timeline-item::before{background:#164453}
+[data-theme="dark"] .adm-timeline-dot{background:#0d3341;border-color:var(--line)}
+[data-theme="dark"] .adm-reference-box,[data-theme="dark"] .adm-draft-note{background:#0b2c37;border-color:var(--line)}
+[data-theme="dark"] .adm-progress{background:#123f4d}
+
+/* ── AI Assistant ───────────────────────────────────────────────────────── */
+[data-theme="dark"] .ai-panel{background:rgba(11,40,50,.94);border-color:rgba(255,255,255,.12)}
+[data-theme="dark"] .ai-lang{background:rgba(10,34,43,.6);border-bottom-color:var(--line)}
+[data-theme="dark"] .ai-lang-btn{background:#0d3341;border-color:var(--line);color:#a7c4cb}
+[data-theme="dark"] .ai-lang-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+[data-theme="dark"] .ai-log{background:linear-gradient(180deg,#0a2833,#082028)}
+[data-theme="dark"] .ai-log::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16)}
+[data-theme="dark"] .ai-bubble{background:#0d3341;border-color:var(--line);color:var(--ink)}
+[data-theme="dark"] .ai-msg-icon{background:#0e4a52;color:#7fe0d7}
+[data-theme="dark"] .ai-input-row{background:#0a2833;border-top-color:var(--line)}
+[data-theme="dark"] .ai-input{background:#0d3341;border-color:var(--line);color:var(--ink)}
+[data-theme="dark"] .ai-input:focus{background:#0f3a49}
+[data-theme="dark"] .ai-input::placeholder{color:#7f9ba2}
+[data-theme="dark"] .ai-disclaimer{background:rgba(10,34,43,.7);border-top-color:var(--line);color:var(--muted)}
+[data-theme="dark"] .ai-starter{background:#0d3341;color:var(--cyan);border-color:rgba(20,184,197,.4)}
+[data-theme="dark"] .ai-starters-title{color:var(--muted)}
+
+/* ── Enrollment / Create Account page: theme-aware glass (no gray fog) ────
+   The shared auth CSS in index.css is dark-glass first (white text over the
+   darkened photo). Light mode swaps the register card to white glass with
+   dark readable text; dark mode keeps teal-tinted surfaces and white text.
+   The left branding panel stays intentionally dark-teal in both themes. */
+[data-theme="light"] .auth-shell--register{background:none;border-color:rgba(255,255,255,.4);box-shadow:0 30px 80px rgba(6,24,30,.32)}
+[data-theme="light"] .auth-card.auth-register-card{background:linear-gradient(180deg,rgba(255,255,255,.93),rgba(243,250,248,.9));border-color:rgba(255,255,255,.65);backdrop-filter:blur(8px)}
+[data-theme="light"] .auth-card.auth-register-card .auth-card-header h2{color:#0a3540}
+[data-theme="light"] .auth-card.auth-register-card .auth-card-header p{color:#47666f}
+[data-theme="light"] .auth-card.auth-register-card .auth-welcome-banner{background:linear-gradient(135deg,rgba(20,184,197,.14),rgba(11,111,123,.08));border-color:#bfe6de}
+[data-theme="light"] .auth-card.auth-register-card .auth-welcome-eyebrow{color:#0b6f7b}
+[data-theme="light"] .auth-card.auth-register-card .auth-welcome-title{color:#0a3540}
+[data-theme="light"] .auth-card.auth-register-card .auth-welcome-text{color:#47666f}
+[data-theme="light"] .auth-card.auth-register-card .auth-security-pill{background:#e0f5f0;color:#0b6f7b;border-color:#bfe6de}
+[data-theme="light"] .auth-card.auth-register-card .auth-section-header{color:#0a3540}
+[data-theme="light"] .auth-card.auth-register-card .register-form-section{background:rgba(10,53,64,.03);border-color:#dbe9e5}
+[data-theme="light"] .auth-card.auth-register-card .auth-field span{color:#2c4d57}
+[data-theme="light"] .auth-card.auth-register-card .auth-field input,[data-theme="light"] .auth-card.auth-register-card .auth-field select,[data-theme="light"] .auth-card.auth-register-card .auth-field textarea{background:#fff;border-color:#c9ded9;color:#123b45}
+[data-theme="light"] .auth-card.auth-register-card .auth-field input::placeholder,[data-theme="light"] .auth-card.auth-register-card .auth-field textarea::placeholder,[data-theme="light"] .auth-card.auth-register-card .auth-phone-field input::placeholder{color:#87a3a0}
+[data-theme="light"] .auth-card.auth-register-card .auth-field input:focus,[data-theme="light"] .auth-card.auth-register-card .auth-field select:focus,[data-theme="light"] .auth-card.auth-register-card .auth-field textarea:focus{background:#f6fdfb;border-color:var(--cyan)}
+[data-theme="light"] .auth-card.auth-register-card .auth-phone-field{background:#fff;border-color:#c9ded9}
+[data-theme="light"] .auth-card.auth-register-card .auth-phone-field input{color:#123b45}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-button{background:#eef6f4;color:#12454f}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-button:hover{background:#e0efeb}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-name{color:#12454f}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-dial{color:#0b6f7b}
+[data-theme="light"] .auth-card.auth-register-card .auth-field .pw-toggle{color:#2c4d57}
+[data-theme="light"] .auth-card.auth-register-card .auth-field .pw-toggle:hover{background:rgba(20,184,197,.14)}
+[data-theme="light"] .auth-card.auth-register-card .auth-footer-text{color:#274a53}
+[data-theme="light"] .auth-card.auth-register-card .auth-footer-text a{color:#0b6f7b}
+[data-theme="light"] .auth-card.auth-register-card .error-text{color:#b24e43!important;background:#fff0ed;border:1px solid #f5cbc4}
+[data-theme="dark"] .auth-card.auth-register-card{background:linear-gradient(180deg,rgba(6,30,38,.62),rgba(6,30,38,.7))}
+
+/* ── Official logo: white "chip" so the white-background artwork reads on
+     dark surfaces in BOTH themes, without recoloring the logo itself ─────── */
+.brand-logo-img{background:#fff;border-radius:10px;padding:3px 7px}
+.auth-brand .brand-logo-img,.footer-brand .brand-logo-img{background:#fff}
+[data-theme="dark"] .footer-brand .brand-logo-img{filter:none}
+
+/* ── Theme toggle control (accessible Sun/Moon, header + mobile) ────────── */
+.theme-toggle{width:38px;height:38px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--navy);display:grid;place-items:center;transition:background .2s,color .2s,border-color .2s,transform .2s;flex:0 0 auto}
+.theme-toggle:hover{transform:translateY(-1px);border-color:var(--cyan);color:var(--blue)}
+.theme-toggle:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.theme-toggle svg{pointer-events:none}
+[data-theme="dark"] .theme-toggle{background:#0d3341;border-color:var(--line);color:#ffd98a}
+[data-theme="dark"] .theme-toggle:hover{border-color:var(--cyan);color:#ffe4a3}
