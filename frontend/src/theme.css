@@ -224,4 +224,7 @@
 .home-emergency-copy .hero-actions,.home-emergency-copy .home-trust-row{justify-content:center}
 
 @media(min-width:851px){.nav-wrap .main-nav{position:static;transform:none;margin-left:auto}}
+.auth-phone-field{overflow:visible}
+.auth-country-select-wrap{position:relative;z-index:31}
+.auth-country-name-button{width:100%}
 [data-theme="dark"] .theme-toggle:hover{border-color:var(--cyan);color:#ffe4a3}

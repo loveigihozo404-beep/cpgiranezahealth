@@ -4,6 +4,7 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import { Link, Navigate, NavLink, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { ArrowRight, Award, Bell, BookOpen, CalendarDays, CheckCircle2, ChevronDown, ClipboardList, Clock3, Compass, FileText, HeartPulse, Home as HomeIcon, LayoutDashboard, LogOut, Mail, Menu, MessageCircle, Phone, Search, Settings, ShieldCheck, Stethoscope, Target, UserRound, Users, X } from 'lucide-react'
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTiktok, FaWhatsapp, FaXTwitter } from 'react-icons/fa6'
+import worldCountries from 'world-countries'
 import { ensureStudentProfile, isAdminRole, isSupabaseConfigured, supabase, getCurrentProfile, getProfileByUserId, type Profile } from './lib/supabase'
 import AdminPortal from './AdminPortal'
 import { PasswordField } from './components/PasswordField'
@@ -22,26 +23,38 @@ type Course = { id: string | number; slug: string; title: string; category: stri
 
 const defaultCourseImage = 'https://images.unsplash.com/photo-1576765608866-5b51046452be?auto=format&fit=crop&w=900&q=80'
 
-type CountryOption = { code: string; name: string; dialCode: string; flag: string }
+type CountryOption = { code: string; name: string; dialCode: string; flag: string; searchText: string }
 
-const countryOptions: CountryOption[] = [
-  { code: 'RW', name: 'Rwanda', dialCode: '+250', flag: '🇷🇼' },
-  { code: 'UG', name: 'Uganda', dialCode: '+256', flag: '🇺🇬' },
-  { code: 'KE', name: 'Kenya', dialCode: '+254', flag: '🇰🇪' },
-  { code: 'TZ', name: 'Tanzania', dialCode: '+255', flag: '🇹🇿' },
-  { code: 'BI', name: 'Burundi', dialCode: '+257', flag: '🇧🇮' },
-  { code: 'CD', name: 'DR Congo', dialCode: '+243', flag: '🇨🇩' },
-  { code: 'US', name: 'United States', dialCode: '+1', flag: '🇺🇸' },
-  { code: 'GB', name: 'United Kingdom', dialCode: '+44', flag: '🇬🇧' },
-  { code: 'FR', name: 'France', dialCode: '+33', flag: '🇫🇷' },
-  { code: 'BE', name: 'Belgium', dialCode: '+32', flag: '🇧🇪' },
-  { code: 'ZA', name: 'South Africa', dialCode: '+27', flag: '🇿🇦' },
-  { code: 'NG', name: 'Nigeria', dialCode: '+234', flag: '🇳🇬' },
-  { code: 'ET', name: 'Ethiopia', dialCode: '+251', flag: '🇪🇹' },
-  { code: 'CM', name: 'Cameroon', dialCode: '+237', flag: '🇨🇲' },
-  { code: 'IN', name: 'India', dialCode: '+91', flag: '🇮🇳' },
-  { code: 'DE', name: 'Germany', dialCode: '+49', flag: '🇩🇪' }
-]
+const getCountryDialCode = (country: (typeof worldCountries)[number]) => {
+  if (!country.idd.root) return ''
+  if (!country.idd.suffixes.length || country.cca2 === 'US' || country.cca2 === 'CA' || country.idd.root === '+7') return country.idd.root
+  return `${country.idd.root}${country.idd.suffixes[0]}`
+}
+
+const countryOptions: CountryOption[] = worldCountries
+  .map((country) => {
+    const name = country.cca2 === 'CD' ? 'DR Congo' : country.name.common
+    const dialCode = getCountryDialCode(country)
+    return {
+      code: country.cca2,
+      name,
+      dialCode,
+      flag: country.flag,
+      searchText: [name, country.name.common, country.name.official, country.cca2, country.cca3, dialCode, ...country.altSpellings].join(' ').toLowerCase(),
+    }
+  })
+  .sort((first, second) => first.name.localeCompare(second.name))
+
+const searchCountryOptions = (query: string) => {
+  const normalizedQuery = query.trim().toLowerCase()
+  if (!normalizedQuery) return countryOptions
+  const score = (country: CountryOption) => {
+    if (country.name.toLowerCase() === normalizedQuery || country.code.toLowerCase() === normalizedQuery || country.dialCode === normalizedQuery) return 0
+    if (country.name.toLowerCase().startsWith(normalizedQuery) || country.code.toLowerCase().startsWith(normalizedQuery)) return 1
+    return 2
+  }
+  return countryOptions.filter((country) => country.searchText.includes(normalizedQuery)).sort((first, second) => score(first) - score(second) || first.name.localeCompare(second.name))
+}
 
 const defaultCountry = countryOptions.find((country) => country.code === 'RW') ?? countryOptions[0]
 
@@ -568,6 +581,8 @@ function AuthForm({ mode }: { mode: 'login' | 'register' | 'forgot' }) {
   const [residence, setResidence] = useState('')
   const [address, setAddress] = useState('')
   const [country, setCountry] = useState('Rwanda')
+  const [countryOpen, setCountryOpen] = useState(false)
+  const [countrySearch, setCountrySearch] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const isRegister = mode === 'register'
   const isForgot = mode === 'forgot'
@@ -579,6 +594,7 @@ function AuthForm({ mode }: { mode: 'login' | 'register' | 'forgot' }) {
 
   // Close the country-code dropdown when clicking anywhere outside it.
   const phoneCountryRef = useRef<HTMLDivElement>(null)
+  const countryRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     if (!phoneCountryOpen) return
     const handlePointerDown = (event: PointerEvent) => {
@@ -588,11 +604,31 @@ function AuthForm({ mode }: { mode: 'login' | 'register' | 'forgot' }) {
     return () => document.removeEventListener('pointerdown', handlePointerDown)
   }, [phoneCountryOpen])
 
-  const filteredPhoneCountries = countryOptions.filter((countryOption) => {
-    const query = phoneCountrySearch.trim().toLowerCase()
-    if (!query) return true
-    return countryOption.name.toLowerCase().includes(query) || countryOption.code.toLowerCase().includes(query) || countryOption.dialCode.includes(query)
-  })
+  useEffect(() => {
+    if (!countryOpen) return
+    const handlePointerDown = (event: PointerEvent) => {
+      if (countryRef.current && !countryRef.current.contains(event.target as Node)) setCountryOpen(false)
+    }
+    document.addEventListener('pointerdown', handlePointerDown)
+    return () => document.removeEventListener('pointerdown', handlePointerDown)
+  }, [countryOpen])
+
+  const filteredPhoneCountries = searchCountryOptions(phoneCountrySearch)
+  const filteredCountries = searchCountryOptions(countrySearch)
+
+  const selectPhoneCountry = (countryOption: CountryOption) => {
+    setPhoneCountry(countryOption)
+    setPhoneCountryOpen(false)
+    setPhoneCountrySearch('')
+  }
+
+  const selectCountry = (countryOption: CountryOption) => {
+    setCountry(countryOption.name)
+    setCountryOpen(false)
+    setCountrySearch('')
+  }
+
+  const selectedCountry = countryOptions.find((countryOption) => countryOption.name === country) ?? countryOptions.find((countryOption) => countryOption.code === 'RW')
 
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -739,7 +775,14 @@ function AuthForm({ mode }: { mode: 'login' | 'register' | 'forgot' }) {
                     <span>Phone number</span>
                     <div className="auth-phone-field" aria-label="Phone number input">
                       <div className="auth-phone-select-wrap" ref={phoneCountryRef}>
-                        <button type="button" className="auth-country-button" aria-expanded={phoneCountryOpen} aria-haspopup="listbox" onClick={() => setPhoneCountryOpen(!phoneCountryOpen)}>
+                        <button type="button" className="auth-country-button" aria-expanded={phoneCountryOpen} aria-haspopup="listbox" onClick={(event) => {
+                          if (event.detail !== 0) setPhoneCountryOpen(!phoneCountryOpen)
+                        }} onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault()
+                            setPhoneCountryOpen(true)
+                          }
+                        }}>
                           <span className="auth-country-flag">{phoneCountry.flag}</span>
                           <span className="auth-country-name">{phoneCountry.name}</span>
                           <span className="auth-country-dial">{phoneCountry.dialCode}</span>
@@ -762,10 +805,12 @@ function AuthForm({ mode }: { mode: 'login' | 'register' | 'forgot' }) {
                                   key={countryOption.code}
                                   type="button"
                                   className={`auth-country-option${countryOption.code === phoneCountry.code ? ' selected' : ''}`}
-                                  onClick={() => {
-                                    setPhoneCountry(countryOption)
-                                    setPhoneCountryOpen(false)
-                                    setPhoneCountrySearch('')
+                                  onClick={() => selectPhoneCountry(countryOption)}
+                                  onKeyDown={(event) => {
+                                    if (event.key === 'Enter' || event.key === ' ') {
+                                      event.preventDefault()
+                                      selectPhoneCountry(countryOption)
+                                    }
                                   }}
                                 >
                                   <span>{countryOption.flag}</span>
@@ -806,7 +851,54 @@ function AuthForm({ mode }: { mode: 'login' | 'register' | 'forgot' }) {
                   <label className="auth-field auth-field--full"><span>National ID or passport</span><input required value={identificationNumber} onChange={event => setIdentificationNumber(event.target.value)} placeholder="National ID or passport" /></label>
                   <label className="auth-field"><span>Residence</span><select required value={residence} onChange={event => setResidence(event.target.value)}><option value="">Select residence</option><option value="KIGALI">Kigali City</option><option value="EASTERN">Eastern Province</option><option value="NORTHERN">Northern Province</option><option value="SOUTHERN">Southern Province</option><option value="WESTERN">Western Province</option><option value="OTHER">Outside Rwanda</option></select></label>
                   <label className="auth-field auth-field--full"><span>Address</span><textarea required value={address} onChange={event => setAddress(event.target.value)} placeholder="Full address" rows={3} /></label>
-                  <label className="auth-field"><span>Country</span><select required value={country} onChange={event => setCountry(event.target.value)}><option value="Rwanda">Rwanda</option><option value="Burundi">Burundi</option><option value="DRC">Democratic Republic of Congo</option><option value="Uganda">Uganda</option><option value="Tanzania">Tanzania</option><option value="Other">Other country</option></select></label>
+                  <label className="auth-field"><span>Country</span><div className="auth-country-select-wrap" ref={countryRef}>
+                    <button type="button" className="auth-country-button auth-country-name-button" aria-expanded={countryOpen} aria-haspopup="listbox" onClick={(event) => {
+                      if (event.detail !== 0) setCountryOpen(!countryOpen)
+                    }} onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault()
+                        setCountryOpen(true)
+                      }
+                    }}>
+                      <span className="auth-country-flag">{selectedCountry?.flag}</span>
+                      <span className="auth-country-name">{selectedCountry?.name}</span>
+                      <span className="auth-country-dial">{selectedCountry?.code}</span>
+                      <ChevronDown size={14} className="auth-country-caret" />
+                    </button>
+                    {countryOpen && (
+                      <div className="auth-country-menu" role="listbox" aria-label="Select your country">
+                        <div className="auth-country-search-wrap">
+                          <Search size={14} />
+                          <input
+                            value={countrySearch}
+                            onChange={(event) => setCountrySearch(event.target.value)}
+                            placeholder="Search country or ISO code"
+                            aria-label="Search your country"
+                          />
+                        </div>
+                        <div className="auth-country-options">
+                          {filteredCountries.map((countryOption) => (
+                            <button
+                              key={countryOption.code}
+                              type="button"
+                              className={`auth-country-option${countryOption.name === country ? ' selected' : ''}`}
+                              onClick={() => selectCountry(countryOption)}
+                              onKeyDown={(event) => {
+                                if (event.key === 'Enter' || event.key === ' ') {
+                                  event.preventDefault()
+                                  selectCountry(countryOption)
+                                }
+                              }}
+                            >
+                              <span>{countryOption.flag}</span>
+                              <span className="auth-country-label">{countryOption.name}</span>
+                              <span className="auth-country-code">{countryOption.code}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div></label>
                 </div>
               </div>
 
