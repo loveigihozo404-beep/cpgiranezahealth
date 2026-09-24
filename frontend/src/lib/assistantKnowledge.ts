@@ -45,7 +45,7 @@ export type AssistantContext = {
 // shared with the AI prompt so it can point visitors at pages that exist.
 export const ROUTES: Array<[string, string]> = [
   ['Home', '/'],
-  ['About CP Giraneza Health', '/about'],
+  ['About CarePath Training Institute', '/about'],
   ['Courses / programmes', '/courses'],
   ['Home Care services', '/home-care'],
   ['Admissions overview', '/admissions'],
@@ -229,8 +229,8 @@ export function getOfflineAnswer(text: string, lang: Lang, ctx: AssistantContext
     },
     about: {
       en: '{AX} {AM} Read more on the [[About Us|/about]] page.',
-      fr: 'CP Giraneza Health est une plateforme de formation aux soins de santé et de soins à domicile, axée sur des compétences pratiques, le développement professionnel et un accompagnement digne à la maison. En savoir plus sur la page [[À propos|/about]].',
-      rw: 'CP Giraneza Health ni urubuga rw\'amahugurwa mu by\'ubuvuzi no gutanga serivisi zo mu ngo, cyibanda ku bumenyi bufatika, iterambere ry\'umwuga no guha abantu ubufasha bw\'itekeza mu ngo. Soma byinshi ku rupapuro [[Ibyerekeye twe|/about]].',
+      fr: 'CarePath Training Institute est une plateforme de formation aux soins de santé et de soins à domicile, axée sur des compétences pratiques, le développement professionnel et un accompagnement digne à la maison. En savoir plus sur la page [[À propos|/about]].',
+      rw: 'CarePath Training Institute ni urubuga rw\'amahugurwa mu by\'ubuvuzi no gutanga serivisi zo mu ngo, cyibanda ku bumenyi bufatika, iterambere ry\'umwuga no guha abantu ubufasha bw\'itekeza mu ngo. Soma byinshi ku rupapuro [[Ibyerekeye twe|/about]].',
     },
     courses: {
       en: 'We run practical, healthcare-focused programmes ({CH}). Browse the full catalogue on the [[Courses|/courses]] page and open a programme to see its duration, level and requirements. Ready to join? See [[Admissions|/admissions]].',

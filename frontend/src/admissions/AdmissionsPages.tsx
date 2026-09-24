@@ -52,7 +52,7 @@ export function AdmissionsLanding() {
   return (
     <>
       <AdmissionsHero
-        eyebrow="Admissions · CP Giraneza Health"
+        eyebrow="Admissions · CarePath Training Institute"
         title={admissions.overview.title}
         text={admissions.overview.text}
       >
@@ -80,7 +80,7 @@ export function AdmissionsLanding() {
               <AdmissionsSectionHead
                 eyebrow="Welcome to admissions"
                 title="A clear, guided route into care education."
-                text="CP Giraneza Health trains people to deliver safe, compassionate care. The admissions process is designed to be straightforward: you tell us about yourself, choose a programme and submit — we guide everything that follows."
+                text="CarePath Training Institute trains people to deliver safe, compassionate care. The admissions process is designed to be straightforward: you tell us about yourself, choose a programme and submit — we guide everything that follows."
               />
               <p style={{ maxWidth: 560 }}>
                 Every application is reviewed by a real admissions team, and every applicant receives a reference number for tracking. If anything is unclear, our team is available before, during and after your application.

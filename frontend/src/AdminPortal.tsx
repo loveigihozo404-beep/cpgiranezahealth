@@ -256,7 +256,7 @@ function AdminDashboard({ onNav }: { onNav: (k: string) => void }) {
       <div className="admin-welcome-banner">
         <div>
           <h2>{greeting}, Administrator</h2>
-          <p>CP Giraneza Health · Admin Portal · {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
+          <p>CarePath Training Institute · Admin Portal · {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           {stats && (
@@ -1918,10 +1918,10 @@ export default function Admin() {
         <div className="admin-sidebar-brand">
           <Link to="/" className="brand" style={{ color: '#fff', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
             {brand.logoUrl
-              ? <img src={brand.logoUrl} alt="CP Giraneza Health" style={{ height: 34, maxWidth: 120, objectFit: 'contain' }} />
+              ? <img src={brand.logoUrl} alt="CarePath Training Institute" style={{ height: 34, maxWidth: 120, objectFit: 'contain' }} />
               : <span className="brand-mark"><HeartPulse size={18} /></span>}
             <span style={{ display: 'flex', flexDirection: 'column', fontSize: 13 }}>
-              CP <b>Giraneza</b><small style={{ fontSize: 7, letterSpacing: '2.7px', color: '#14b8c5', marginTop: 3 }}>HEALTH</small>
+              CarePath Training Institute
             </span>
           </Link>
         </div>

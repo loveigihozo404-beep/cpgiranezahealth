@@ -339,7 +339,7 @@ export default function AdmissionsApply() {
       <section className="adm-wizard-hero">
         <div className="container">
           <div className="eyebrow"><span className="eyebrow-dot" /> Admissions · Application</div>
-          <h1>Apply to CP Giraneza Health</h1>
+          <h1>Apply to CarePath Training Institute</h1>
           <p>
             Complete the steps below to submit your application. Your progress is saved as a draft on this device, so you can leave and return at any time.
           </p>

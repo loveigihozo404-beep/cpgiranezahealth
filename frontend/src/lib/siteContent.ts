@@ -111,9 +111,9 @@ export const HOME_DEFAULTS: HomeContent = {
 }
 
 export const ABOUT_DEFAULTS: AboutContent = {
-  eyebrow: 'About CP Giraneza Health',
+  eyebrow: 'About CarePath Training Institute',
   title: 'Training people to make care feel possible.',
-  text: 'CP Giraneza Health is a healthcare training and home-care platform focused on practical competence, professional growth and dignified support at home. Our programs are intentionally clear, grounded and connected to the realities of care.',
+  text: 'CarePath Training Institute is a healthcare training and home-care platform focused on practical competence, professional growth and dignified support at home. Our programs are intentionally clear, grounded and connected to the realities of care.',
   image: 'https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=1200&q=86',
   mission: 'To prepare capable, compassionate care professionals through practical, practice-led learning — and to support families with dignified home care in the communities we serve.',
   vision: 'A healthier future built through capable people, where practical competence and compassionate care grow together.',
@@ -156,7 +156,7 @@ export const FOOTER_DEFAULTS: FooterContent = {
   email: 'hello@cpgiranezahealth.rw',
   website: 'cpgiranezahealth.rw',
   hours: 'Mon - Fri, 8:00 - 17:00',
-  copyright: '© 2026 CP Giraneza Health',
+  copyright: '© 2026 CarePath Training Institute',
   legal: 'Privacy · Terms · Built for better care',
 }
 
@@ -171,7 +171,7 @@ export const FAQ_DEFAULTS: FaqContent = {
 
 export const ENROLL_DEFAULTS: EnrollContent = {
   welcomeEyebrow: 'Create account · Enroll',
-  welcomeTitle: 'Welcome to Carepath Training Institute',
+  welcomeTitle: 'Welcome to CarePath Training Institute',
   welcomeText: 'Create your account to enroll in programs, follow your application and keep your learning details in one secure place.',
 }
 
@@ -191,7 +191,7 @@ export const PARTNERS_DEFAULTS: PartnersContent = {
 
 export const ADMISSIONS_DEFAULTS: AdmissionsContent = {
   overview: {
-    eyebrow: 'Admissions · CP Giraneza Health',
+    eyebrow: 'Admissions · CarePath Training Institute',
     title: 'Your pathway into professional health and social care starts here.',
     text: 'Practical, practice-led programmes with a clear application journey — from your first enquiry to enrolment. Everything you need to apply lives on this page.',
   },
@@ -222,7 +222,7 @@ export const ADMISSIONS_DEFAULTS: AdmissionsContent = {
   },
   importantDates: {
     title: 'An admissions cycle that works around you.',
-    text: 'CP Giraneza Health runs rolling admissions, which means you can apply at any time of year. Here is how the cycle works from submission to your first day.',
+    text: 'CarePath Training Institute runs rolling admissions, which means you can apply at any time of year. Here is how the cycle works from submission to your first day.',
     items: [
       { label: 'Applications', value: 'Open year-round', detail: 'Applications are received continuously and reviewed in the order they are submitted.' },
       { label: 'Review', value: 'As soon as you submit', detail: 'The admissions team begins reviewing your application right after submission.' },
@@ -234,7 +234,7 @@ export const ADMISSIONS_DEFAULTS: AdmissionsContent = {
     title: 'Frequently asked questions about admissions.',
     text: 'Quick answers about applying, documents, tracking your application and what happens next. If your question is not here, our admissions team is one message away.',
     items: [
-      { question: 'Who can apply to CP Giraneza Health programmes?', answer: 'Our certificate programmes are open to national and international applicants who hold at least an A2 (secondary school) certificate in any field, as well as graduates of accredited institutions who want to pursue health and social care studies. Postgraduate pathways require a relevant first qualification, which the admissions office verifies during review.' },
+      { question: 'Who can apply to CarePath Training Institute programmes?', answer: 'Our certificate programmes are open to national and international applicants who hold at least an A2 (secondary school) certificate in any field, as well as graduates of accredited institutions who want to pursue health and social care studies. Postgraduate pathways require a relevant first qualification, which the admissions office verifies during review.' },
       { question: 'How do I apply?', answer: 'Complete the online application on the Application page. You move through personal information, academic information, programme selection, required documents and a final review before submitting. You receive a reference number immediately after submission.' },
       { question: 'Do I need an account before applying?', answer: 'An account is recommended because it keeps your details in one place and makes future applications faster. If you prefer, you can also complete the application as a guest and create an account later.' },
       { question: 'What happens after I submit my application?', answer: 'Your application is recorded with a unique reference number and queued for review by the admissions team. You are notified by email as soon as the status changes, and you can follow progress at any time on the Application Status page.' },
@@ -274,11 +274,20 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
+function normalizeBranding(value: unknown): unknown {
+  if (typeof value === 'string') {
+    return value.replaceAll('CP Giraneza Health', 'CarePath Training Institute').replaceAll('CP Giraneza', 'CarePath Training Institute').replaceAll('Carepath Training Institute', 'CarePath Training Institute')
+  }
+  if (Array.isArray(value)) return value.map(normalizeBranding)
+  if (isPlainObject(value)) return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, normalizeBranding(item)]))
+  return value
+}
+
 /** Stored values override defaults; missing fields keep their default. */
 export function mergeContent<T extends object>(defaults: T, stored: unknown): T {
   if (!isPlainObject(stored)) return defaults
   const merged = { ...defaults } as Record<string, unknown>
-  Object.entries(stored).forEach(([key, value]) => {
+  Object.entries(normalizeBranding(stored) as Record<string, unknown>).forEach(([key, value]) => {
     const base = merged[key]
     if (isPlainObject(base) && isPlainObject(value)) merged[key] = mergeContent(base, value)
     else if (value !== null && value !== undefined) merged[key] = value

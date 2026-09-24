@@ -44,7 +44,7 @@ export type AssistantStrings = {
 export const UI: Record<Lang, AssistantStrings> = {
   en: {
     name: 'Assistant',
-    assistantName: 'CP Giraneza AI Assistant',
+    assistantName: 'CarePath Training Institute AI Assistant',
     subtitle: 'Ask about courses, admissions, home care, signing in and more.',
     openLabel: 'Open AI Assistant',
     closeLabel: 'Close AI Assistant',
@@ -54,7 +54,7 @@ export const UI: Record<Lang, AssistantStrings> = {
     typingLabel: 'Assistant is typing…',
     startersTitle: 'Try asking',
     greeting:
-      'Muraho and hello! I am the CP Giraneza Health assistant. I can help you find programmes, understand admissions, explore home care and get around this website. How can I help you today?',
+      'Muraho and hello! I am the CarePath Training Institute assistant. I can help you find programmes, understand admissions, explore home care and get around this website. How can I help you today?',
     disclaimer:
       'I share general information about this website and our services. I am not a medical professional — for any medical concern, please contact qualified care or emergency services.',
     unavailable:
@@ -66,7 +66,7 @@ export const UI: Record<Lang, AssistantStrings> = {
   },
   fr: {
     name: 'Assistant',
-    assistantName: 'Assistant IA CP Giraneza',
+    assistantName: 'Assistant IA CarePath Training Institute',
     subtitle: 'Posez vos questions sur les formations, les admissions, les soins à domicile, la connexion, etc.',
     openLabel: "Ouvrir l'assistant IA",
     closeLabel: "Fermer l'assistant IA",
@@ -76,7 +76,7 @@ export const UI: Record<Lang, AssistantStrings> = {
     typingLabel: "L'assistant est en train d'écrire…",
     startersTitle: 'Essayez de demander',
     greeting:
-      "Bonjour ! Je suis l'assistant de CP Giraneza Health. Je peux vous aider à trouver les programmes, comprendre les admissions, découvrir les soins à domicile et naviguer sur ce site. Comment puis-je vous aider ?",
+      "Bonjour ! Je suis l'assistant de CarePath Training Institute. Je peux vous aider à trouver les programmes, comprendre les admissions, découvrir les soins à domicile et naviguer sur ce site. Comment puis-je vous aider ?",
     disclaimer:
       "Je fournis des informations générales sur ce site et nos services. Je ne suis pas un professionnel de santé — pour tout problème médical, contactez un professionnel qualifié ou les services d'urgence.",
     unavailable:
@@ -88,7 +88,7 @@ export const UI: Record<Lang, AssistantStrings> = {
   },
   rw: {
     name: 'Umufasha',
-    assistantName: 'Umufasha wa AI wa CP Giraneza',
+    assistantName: 'Umufasha wa AI wa CarePath Training Institute',
     subtitle: 'Bariza ku bijyanye n\'amahugurwa, kwiyandikisha, serivisi zo mu ngo, kwinjira muri konti n\'ibindi.',
     openLabel: 'Fungura umufasha wa AI',
     closeLabel: 'Funga umufasha wa AI',
@@ -98,7 +98,7 @@ export const UI: Record<Lang, AssistantStrings> = {
     typingLabel: 'Umufasha arimo kwandika…',
     startersTitle: 'Gerageza ubaze',
     greeting:
-      'Muraho! Njyewe ndi umufasha wa CP Giraneza Health. Nshobora kugufasha kubona amahugurwa, gusobanukirwa ukwiyandikisha, kumenya serivisi zo mu ngo no kugenduka neza kuri uru rubuga. Ngufasha gute uyu munsi?',
+      'Muraho! Njyewe ndi umufasha wa CarePath Training Institute. Nshobora kugufasha kubona amahugurwa, gusobanukirwa ukwiyandikisha, kumenya serivisi zo mu ngo no kugenduka neza kuri uru rubuga. Ngufasha gute uyu munsi?',
     disclaimer:
       'Ntanga amakuru rusange y\'uru rubuga na serivisi zacu. Sind\'uhanga w\'ubuvuzi — ku bibazo by\'ubuzima, nyamuneka wandikire abahanga b\'ubuvuzi cyangwa inzego z\'ubutabazi.',
     unavailable:
@@ -116,14 +116,14 @@ export const STARTERS: Record<Lang, string[]> = {
     'What courses do you offer?',
     'Tell me about your home-care services',
     'How do I create an account?',
-    'How can I contact CP Giraneza Health?',
+    'How can I contact CarePath Training Institute?',
   ],
   fr: [
     'Comment postuler à un programme ?',
     'Quels cours proposez-vous ?',
     'Présentez-moi vos soins à domicile',
     'Comment créer un compte ?',
-    'Comment contacter CP Giraneza Health ?',
+    'Comment contacter CarePath Training Institute ?',
   ],
   rw: [
     'Niyandikisha gute mu mahugurwa?',

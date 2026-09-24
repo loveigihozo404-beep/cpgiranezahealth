@@ -218,4 +218,10 @@
 .theme-toggle:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .theme-toggle svg{pointer-events:none}
 [data-theme="dark"] .theme-toggle{background:#0d3341;border-color:var(--line);color:#ffd98a}
+
+.home-emergency-copy{text-align:center;margin-left:auto;margin-right:auto}
+.home-emergency-copy h1,.home-emergency-copy p{margin-left:auto;margin-right:auto}
+.home-emergency-copy .hero-actions,.home-emergency-copy .home-trust-row{justify-content:center}
+
+@media(min-width:851px){.nav-wrap .main-nav{position:static;transform:none;margin-left:auto}}
 [data-theme="dark"] .theme-toggle:hover{border-color:var(--cyan);color:#ffe4a3}

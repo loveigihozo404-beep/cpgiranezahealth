@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// CP Giraneza Health — AI Assistant Edge Function (Deno / Supabase Edge Runtime)
+// CarePath Training Institute — AI Assistant Edge Function (Deno / Supabase Edge Runtime)
 //
 // SECURITY MODEL
 //   * The AI provider API key lives ONLY here, as a server-side secret
@@ -114,7 +114,7 @@ function sanitizeContext(raw: unknown): SiteContext {
 function buildSystemPrompt(lang: Lang, ctx: SiteContext): string {
   const url = ctx.siteUrl || PROD_URL
   return [
-    `You are the official AI Assistant of CP Giraneza Health, a healthcare training and home-care organisation${ctx.base ? ` based in ${ctx.base}` : ''}.`,
+    `You are the official AI Assistant of CarePath Training Institute, a healthcare training and home-care organisation${ctx.base ? ` based in ${ctx.base}` : ''}.`,
     'You help visitors understand and navigate this website: the organisation (About Us), programmes/courses, the admissions/application process, home-care services, accounts (login/register) and contact details.',
     '',
     `ANSWER ONLY IN ${LANG_NAME[lang].toUpperCase()}. Keep replying in ${LANG_NAME[lang]} even if the visitor writes in another language, unless they explicitly ask to switch. Never mix languages randomly.`,

@@ -7,7 +7,7 @@ import { ADMISSIONS_DEFAULTS, useSiteContent } from '../lib/siteContent'
 
 export const admissionsFaqs: Array<{ question: string; answer: string }> = [
   {
-    question: 'Who can apply to CP Giraneza Health programmes?',
+    question: 'Who can apply to CarePath Training Institute programmes?',
     answer: 'Our certificate programmes are open to national and international applicants who hold at least an A2 (secondary school) certificate in any field, as well as graduates of accredited institutions who want to pursue health and social care studies. Postgraduate pathways require a relevant first qualification, which the admissions office verifies during review.',
   },
   {
