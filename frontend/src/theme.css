@@ -227,4 +227,13 @@
 .auth-phone-field{overflow:visible}
 .auth-country-select-wrap{position:relative;z-index:31}
 .auth-country-name-button{width:100%}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-menu{z-index:50;background:rgba(255,255,255,.97);border-color:#c9ded9;color:#123b45;box-shadow:0 18px 40px rgba(8,43,58,.18);pointer-events:auto}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-search-wrap{border-bottom-color:#dbe9e5;color:#2c4d57}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-search-wrap input{color:#123b45}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-search-wrap input::placeholder{color:#66808a}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-option{color:#123b45}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-option:hover,[data-theme="light"] .auth-card.auth-register-card .auth-country-option:focus-visible{background:rgba(20,184,197,.12)}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-option.selected{background:#e0f5f0;box-shadow:inset 3px 0 0 #0b6f7b}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-code{color:#0b6f7b}
+[data-theme="light"] .auth-card.auth-register-card .auth-country-option.selected .auth-country-code{color:#075866}
 [data-theme="dark"] .theme-toggle:hover{border-color:var(--cyan);color:#ffe4a3}
