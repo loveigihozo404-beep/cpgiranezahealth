@@ -89,6 +89,7 @@ function ConfirmDialog({ message, onConfirm, onCancel }: {
           <button className="admin-btn admin-btn-ghost" onClick={onCancel}>Cancel</button>
           <button className="admin-btn admin-btn-danger" onClick={onConfirm}>Confirm</button>
         </div>
+
       </div>
     </div>
   )
@@ -398,6 +399,7 @@ function AdminDashboard({ onNav, profile }: { onNav: (k: string) => void; profil
           </div>
 
         </div>
+        <AdminRecentEnrollments enrollments={enrollments} onNav={onNav} />
       </div>
 
       <section className="admin-secondary-grid">
@@ -422,26 +424,6 @@ function AdminDashboard({ onNav, profile }: { onNav: (k: string) => void; profil
           </div>
         </div>
 
-        <div className="admin-card admin-data-table-card">
-          <div className="admin-card-header"><div><h2>Recent Enrollments</h2><p>Latest student and programme records</p></div><button className="admin-card-link" onClick={() => onNav('enrollments')}>View all <ChevronRight size={13} /></button></div>
-          {enrollments.length === 0 ? (
-            <div className="admin-table-empty"><ClipboardList size={23} /><strong>No enrollment data available yet</strong><span>New student enrollments will appear here.</span></div>
-          ) : (
-            <div className="admin-table-wrap">
-              <table className="admin-table admin-enrollment-table">
-                <thead><tr><th>Student</th><th>Programme</th><th>Status</th><th>Date</th></tr></thead>
-                <tbody>{enrollments.slice(0, 5).map(enrollment => (
-                  <tr key={enrollment.id}>
-                    <td><span className="admin-table-person"><span>{(enrollment.profiles?.full_name ?? '?').slice(0, 1).toUpperCase()}</span><strong>{enrollment.profiles?.full_name ?? 'Unknown student'}</strong></span></td>
-                    <td>{enrollment.courses?.title ?? <span className="admin-table-muted">Programme unavailable</span>}</td>
-                    <td><StatusBadge status={enrollment.status} /></td>
-                    <td>{fmtDate(enrollment.created_at)}</td>
-                  </tr>
-                ))}</tbody>
-              </table>
-            </div>
-          )}
-        </div>
       </section>
 
       <section className="admin-recommendations">
@@ -469,6 +451,31 @@ function AdminDashboard({ onNav, profile }: { onNav: (k: string) => void; profil
         <strong>Other Suggestions</strong>
         {['Add breadcrumbs for deep navigation', 'Improve mobile responsiveness', 'Add export reports', 'Add role-based access indicators', 'Add tooltips for actions', 'Improve empty states'].map(suggestion => <span key={suggestion}>• {suggestion}</span>)}
       </section>
+    </div>
+  )
+}
+
+function AdminRecentEnrollments({ enrollments, onNav }: { enrollments: Awaited<ReturnType<typeof fetchEnrollments>>; onNav: (key: string) => void }) {
+  return (
+    <div className="admin-card admin-data-table-card admin-recent-enrollments">
+      <div className="admin-card-header"><div><h2>Recent Enrollments</h2><p>Latest student and programme records</p></div><button className="admin-card-link" onClick={() => onNav('enrollments')}>View all <ChevronRight size={13} /></button></div>
+      {enrollments.length === 0 ? (
+        <div className="admin-table-empty"><ClipboardList size={23} /><strong>No enrollment data available yet</strong><span>New student enrollments will appear here.</span></div>
+      ) : (
+        <div className="admin-table-wrap">
+          <table className="admin-table admin-enrollment-table">
+            <thead><tr><th>Student</th><th>Programme</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody>{enrollments.slice(0, 5).map(enrollment => (
+              <tr key={enrollment.id}>
+                <td><span className="admin-table-person"><span>{(enrollment.profiles?.full_name ?? '?').slice(0, 1).toUpperCase()}</span><strong>{enrollment.profiles?.full_name ?? 'Unknown student'}</strong></span></td>
+                <td>{enrollment.courses?.title ?? <span className="admin-table-muted">Programme unavailable</span>}</td>
+                <td><StatusBadge status={enrollment.status} /></td>
+                <td>{fmtDate(enrollment.created_at)}</td>
+              </tr>
+            ))}</tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }
@@ -2066,7 +2073,7 @@ export default function Admin() {
       </aside>
 
       {/* Main */}
-      <div className={`admin-main ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+      <div className={`admin-main ${sidebarCollapsed ? 'sidebar-collapsed' : ''} ${activeSection === 'dashboard' ? 'dashboard-active' : ''}`}>
         {/* Topbar */}
         <header className="admin-topbar">
           <button className="admin-menu-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>

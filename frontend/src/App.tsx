@@ -156,7 +156,7 @@ function SiteLayout() {
     document.addEventListener('pointerdown', handlePointerDown)
     return () => document.removeEventListener('pointerdown', handlePointerDown)
   }, [admissionsOpen])
-  return <div className="app-shell">
+  return <div className={`app-shell ${location.pathname.startsWith('/admin') ? 'admin-site-shell' : ''}`}>
     <header className="topbar"><div className="container nav-wrap">
       <Link to="/" className="brand" onClick={closeMenus}>{brand.logoUrl ? <img className="brand-logo-img" src={brand.logoUrl} alt="CarePath Training Institute" /> : <span className="brand-mark"><HeartPulse size={21} /></span>}<span>CarePath Training Institute</span></Link>
       <nav className={`main-nav ${menuOpen ? 'open' : ''}`}>{links.map(([label, path]) => <Fragment key={path}>
