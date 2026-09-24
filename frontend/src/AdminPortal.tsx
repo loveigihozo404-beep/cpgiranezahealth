@@ -1,10 +1,11 @@
 ﻿import { useState, useEffect, useCallback, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { useNavigate, Link } from 'react-router-dom'
 import {
   LayoutDashboard, Users, BookOpen, Calendar, ClipboardList,
   Award, Newspaper, Image, Briefcase, FileText, Heart, Mail,
   Handshake, Bell, Settings, ScrollText, LogOut, Menu, X,
-  Search, ChevronDown, CheckCircle2, AlertTriangle, Info,
+  Search, ChevronDown, ChevronLeft, MoreVertical, CheckCircle2, AlertTriangle, Info,
   Plus, Pencil, Trash2, Eye, EyeOff, Star, StarOff,
   RefreshCw, Shield, Home,
   UserCheck, Clock, CheckCheck, XCircle, Ban,
@@ -39,6 +40,7 @@ import { PasswordField } from './components/PasswordField'
 import { createPrivateFileUrl, getPublicFileUrl, moveStoredFile, type UploadedFile } from './lib/storage'
 import { AdminApplications, AdminDocuments, AdminWebsiteContent } from './AdminExtras'
 import { BRAND_DEFAULTS, useSiteContent } from './lib/siteContent'
+import { ThemeToggle } from './components/ThemeToggle'
 
 // ── Toast ──────────────────────────────────────────────────────────────────
 type ToastType = 'success' | 'error' | 'info'
@@ -214,18 +216,21 @@ export { StatusBadge, fmtDate, ConfirmDialog, ToastContainer, useToast }
 export type { ToastType, ToastMsg }
 
 // ── Admin Dashboard Overview ───────────────────────────────────────────────
-function AdminDashboard({ onNav }: { onNav: (k: string) => void }) {
+function AdminDashboard({ onNav, profile }: { onNav: (k: string) => void; profile: Profile | null }) {
   const [stats, setStats] = useState<DashStats | null>(null)
   const [logs, setLogs] = useState<Awaited<ReturnType<typeof fetchAuditLogs>>>([])
+  const [enrollments, setEnrollments] = useState<Awaited<ReturnType<typeof fetchEnrollments>>>([])
   const [refreshing, setRefreshing] = useState(false)
   const hour = new Date().getHours()
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
+  const firstName = profile?.full_name?.trim().split(/\s+/)[0] || 'Administrator'
 
   async function load() {
     setRefreshing(true)
     await Promise.all([
       fetchDashStats().then(setStats),
-      fetchAuditLogs().then(d => setLogs(d.slice(0, 8)))
+      fetchAuditLogs().then(d => setLogs(d.slice(0, 8))),
+      fetchEnrollments().then(setEnrollments)
     ])
     setRefreshing(false)
   }
@@ -243,41 +248,52 @@ function AdminDashboard({ onNav }: { onNav: (k: string) => void }) {
     { label: 'Job Apps', value: stats.jobApplications, icon: FileText, color: 'purple', key: 'job-applications' },
   ] : []
 
-  // Mini bar chart data (last 7 days placeholder using stat values)
-  const barData = stats ? [
-    stats.users, stats.courses, stats.enrollments, stats.certificates,
-    stats.homecareRequests, stats.contactMessages, stats.jobApplications
-  ] : []
-  const barMax = Math.max(...barData, 1)
+  const activityDays = Array.from({ length: 7 }, (_, index) => {
+    const date = new Date()
+    date.setHours(0, 0, 0, 0)
+    date.setDate(date.getDate() - (6 - index))
+    return date
+  })
+  const activityData = activityDays.map(day => logs.filter(log => {
+    const created = new Date(log.created_at)
+    return created >= day && created < new Date(day.getTime() + 86400000)
+  }).length)
+  const activityMax = Math.max(...activityData, 1)
+  const activityHasData = activityData.some(value => value > 0)
+  const programmeCounts = enrollments.reduce<Record<string, number>>((counts, enrollment) => {
+    const title = enrollment.courses?.title?.trim()
+    if (title) counts[title] = (counts[title] ?? 0) + 1
+    return counts
+  }, {})
+  const programmes = Object.entries(programmeCounts).sort(([, a], [, b]) => b - a).slice(0, 4)
+  const programmeTotal = programmes.reduce((total, [, count]) => total + count, 0)
+  const programmeColors = ['#2c9de0', '#7b5fe5', '#23c2bf', '#5579bf']
+  let programmeOffset = 0
+  const programmeGradient = programmes.map(([, count], index) => {
+    const start = programmeOffset
+    programmeOffset += programmeTotal ? (count / programmeTotal) * 100 : 0
+    return `${programmeColors[index]} ${start}% ${programmeOffset}%`
+  }).join(', ')
 
   return (
     <div>
-      {/* Welcome banner */}
-      <div className="admin-welcome-banner">
-        <div>
-          <h2>{greeting}, Administrator</h2>
-          <p>CarePath Training Institute · Admin Portal · {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          {stats && (
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ color: '#3a6070', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>Activity overview</div>
-              <div className="admin-bar-chart">
-                {barData.map((v, i) => (
-                  <div key={i} className="admin-bar" style={{ height: `${Math.max(8, (v / barMax) * 44)}px` }} title={String(v)} />
-                ))}
-              </div>
-            </div>
-          )}
-          <div className="admin-welcome-icon"><HeartPulse size={24} /></div>
-        </div>
-      </div>
-
       <div className="admin-page-header">
-        <div><h1>Dashboard</h1><p>Live statistics from your Supabase database</p></div>
+        <div><h1>Dashboard</h1><p>Overview of your healthcare platform</p></div>
         <button className="admin-btn admin-btn-ghost" onClick={load} disabled={refreshing}>
           <RefreshCw size={14} style={{ animation: refreshing ? 'spin .7s linear infinite' : 'none' }} /> Refresh
         </button>
+      </div>
+
+      <div className="admin-welcome-banner">
+        <div>
+          <span className="admin-eyebrow">CP Giraneza Health · Admin Portal</span>
+          <h2>{greeting}, {firstName} <span aria-hidden="true">👋</span></h2>
+          <p>Welcome back. Here is what is happening across your platform today.</p>
+        </div>
+        <div className="admin-welcome-visual" aria-hidden="true">
+          <HeartPulse size={28} />
+          <span className="admin-welcome-pulse" />
+        </div>
       </div>
 
       {!stats ? (
@@ -298,28 +314,69 @@ function AdminDashboard({ onNav }: { onNav: (k: string) => void }) {
       )}
 
       <div className="admin-dash-grid">
+        <div className="admin-card admin-activity-overview">
+          <div className="admin-card-header"><div><h2>Activity Overview</h2><p>Administrative activity from the last 7 days</p></div><span className="admin-period-label">Last 7 days</span></div>
+          {activityHasData ? (
+            <div className="admin-activity-chart" aria-label="Administrative activity for the last seven days">
+              <div className="admin-chart-gridlines" aria-hidden="true"><span /><span /><span /><span /></div>
+              <div className="admin-chart-bars">
+                {activityData.map((value, index) => (
+                  <div className="admin-chart-column" key={activityDays[index].toISOString()}>
+                    <span className="admin-chart-value">{value}</span>
+                    <div className="admin-chart-bar" style={{ height: `${Math.max(8, (value / activityMax) * 150)}px` }} title={`${value} ${value === 1 ? 'activity' : 'activities'}`} />
+                    <small>{activityDays[index].toLocaleDateString('en-GB', { weekday: 'short' })}</small>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="admin-chart-empty"><ScrollText size={24} /><strong>No activity data available yet</strong><span>Administrative events will appear here as the portal is used.</span></div>
+          )}
+        </div>
+
+        <div className="admin-card admin-programmes-card">
+          <div className="admin-card-header"><div><h2>Top Programmes</h2><p>Distribution of current enrollments</p></div></div>
+          <div className="admin-programme-visual">
+            <div className={`admin-programme-donut ${programmes.length === 0 ? 'empty' : ''}`} style={programmes.length ? { background: `conic-gradient(${programmeGradient})` } : undefined}><span>{programmeTotal || '—'}</span></div>
+            {programmes.length === 0 && <div className="admin-programme-empty"><BookOpen size={20} /><strong>No programme distribution data available yet</strong><span>Rankings will appear when enrollments include course data.</span></div>}
+          </div>
+          {programmes.length > 0 && (
+            <div className="admin-programme-list">
+              {programmes.map(([title, count], index) => (
+                <div className="admin-programme-row" key={title}>
+                  <div className={`admin-programme-dot programme-${index}`} />
+                  <span title={title}>{title}</span>
+                  <strong>{programmeTotal ? Math.round((count / programmeTotal) * 100) : 0}%</strong>
+                </div>
+              ))}
+            </div>
+          )}
+          <button className="admin-programme-link" onClick={() => onNav('enrollments')}>View all enrollments <ChevronRight size={13} /></button>
+        </div>
+
+        <div className="admin-dash-side">
         <div className="admin-card">
-          <div className="admin-card-header"><h2>Recent Activity</h2><span className="admin-badge badge-cyan">{logs.length} entries</span></div>
-          <div style={{ padding: '8px 20px 16px' }}>
+          <div className="admin-card-header"><div><h2>Recent Activity</h2><p>Latest administrative events</p></div><span className="admin-badge badge-cyan">{logs.length}</span></div>
+          <div className="admin-activity-panel">
             {logs.length === 0 ? (
-              <div className="admin-empty"><ScrollText size={28} /><p>No activity recorded yet.<br /><small>Actions will appear here once Supabase is connected.</small></p></div>
+              <div className="admin-chart-empty"><ScrollText size={24} /><strong>No recent activity</strong><span>New events will appear here.</span></div>
             ) : (
               <div className="admin-activity-list">
-                {logs.map(l => (
+                {logs.slice(0, 5).map(l => (
                   <div className="admin-activity-item" key={l.id}>
                     <div className={`admin-activity-dot ${l.action.includes('DELETE') || l.action.includes('REVOKE') ? 'red' : l.action.includes('REJECT') || l.action.includes('CANCEL') ? 'amber' : 'green'}`} />
                     <div className="admin-activity-body">
-                      <span><strong style={{ color: '#e0eef2' }}>{l.action}</strong> · <code style={{ fontSize: 11, color: '#3a6070' }}>{l.entity}</code></span>
-                      <small>{fmtDate(l.created_at)} · {(l as { profiles?: { full_name?: string } }).profiles?.full_name ?? 'System'}</small>
+                      <span><strong>{l.action}</strong><small>{l.entity}</small></span>
+                      <small>{fmtDate(l.created_at)}</small>
                     </div>
                   </div>
                 ))}
               </div>
             )}
           </div>
+          <button className="admin-view-activity" onClick={() => onNav('audit-logs')}>View All Activity <ChevronRight size={13} /></button>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div className="admin-card">
             <div className="admin-card-header"><h2>Quick Actions</h2></div>
             <div style={{ padding: '8px 12px 12px' }}>
@@ -340,25 +397,78 @@ function AdminDashboard({ onNav }: { onNav: (k: string) => void }) {
             </div>
           </div>
 
-          {/* Supabase status card */}
-          <div className="admin-card">
-            <div className="admin-card-header"><h2>System Status</h2></div>
-            <div style={{ padding: '12px 16px 16px', display: 'grid', gap: 10 }}>
-              {[
-                { label: 'Supabase', ok: Boolean(supabase) },
-                { label: 'Authentication', ok: Boolean(supabase) },
-                { label: 'Database RLS', ok: Boolean(supabase) },
-                { label: 'Admin Role', ok: true },
-              ].map(s => (
-                <div key={s.label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: 13, color: '#8aaab4' }}>{s.label}</span>
-                  <span className={`admin-badge ${s.ok ? 'badge-green' : 'badge-red'}`}>{s.ok ? 'Connected' : 'Not configured'}</span>
-                </div>
-              ))}
+        </div>
+      </div>
+
+      <section className="admin-secondary-grid">
+        <div className="admin-card admin-operations-card">
+          <div className="admin-card-header"><div><h2>Healthcare Operations</h2><p>Live operational signals from the platform</p></div><HeartPulse size={18} className="admin-card-header-icon" /></div>
+          <div className="admin-operation-grid">
+            <button className="admin-operation-item" onClick={() => onNav('enrollments')}>
+              <span className="admin-operation-icon amber"><Clock size={17} /></span>
+              <span><small>Pending applications</small><strong>{stats?.pendingEnrollments ?? '—'}</strong><em>{stats ? 'Needs review' : 'Loading data'}</em></span>
+              <ChevronRight size={14} />
+            </button>
+            <button className="admin-operation-item" onClick={() => onNav('homecare-requests')}>
+              <span className="admin-operation-icon red"><Heart size={17} /></span>
+              <span><small>Home care requests</small><strong>{stats?.homecareRequests ?? '—'}</strong><em>{stats ? 'Service enquiries' : 'Loading data'}</em></span>
+              <ChevronRight size={14} />
+            </button>
+            <div className="admin-operation-item admin-operation-status">
+              <span className="admin-operation-icon cyan"><Shield size={17} /></span>
+              <span><small>System status</small><strong>{supabase ? 'Operational' : 'Not configured'}</strong><em>{profile ? 'Admin access verified' : 'Session unavailable'}</em></span>
+              <span className={`admin-status-dot ${supabase && profile ? 'online' : ''}`} aria-label={supabase && profile ? 'Operational' : 'Unavailable'} />
             </div>
           </div>
         </div>
-      </div>
+
+        <div className="admin-card admin-data-table-card">
+          <div className="admin-card-header"><div><h2>Recent Enrollments</h2><p>Latest student and programme records</p></div><button className="admin-card-link" onClick={() => onNav('enrollments')}>View all <ChevronRight size={13} /></button></div>
+          {enrollments.length === 0 ? (
+            <div className="admin-table-empty"><ClipboardList size={23} /><strong>No enrollment data available yet</strong><span>New student enrollments will appear here.</span></div>
+          ) : (
+            <div className="admin-table-wrap">
+              <table className="admin-table admin-enrollment-table">
+                <thead><tr><th>Student</th><th>Programme</th><th>Status</th><th>Date</th></tr></thead>
+                <tbody>{enrollments.slice(0, 5).map(enrollment => (
+                  <tr key={enrollment.id}>
+                    <td><span className="admin-table-person"><span>{(enrollment.profiles?.full_name ?? '?').slice(0, 1).toUpperCase()}</span><strong>{enrollment.profiles?.full_name ?? 'Unknown student'}</strong></span></td>
+                    <td>{enrollment.courses?.title ?? <span className="admin-table-muted">Programme unavailable</span>}</td>
+                    <td><StatusBadge status={enrollment.status} /></td>
+                    <td>{fmtDate(enrollment.created_at)}</td>
+                  </tr>
+                ))}</tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="admin-recommendations">
+        <div className="admin-section-heading"><div><span className="admin-eyebrow">Keep improving the portal</span><h2>Improvements &amp; Recommendations</h2></div></div>
+        <div className="admin-recommendation-grid">
+          {[
+            ['1', 'Visual Hierarchy', 'Keep high-priority tasks and status signals easy to scan.', 'cyan'],
+            ['2', 'Consistent Icons', 'Use familiar outlined icons across every admin workflow.', 'purple'],
+            ['3', 'Color System', 'Reserve accent colors for status, ownership and action.', 'green'],
+            ['4', 'Data Visualization', 'Use charts only when live platform data supports them.', 'blue'],
+            ['5', 'Quick Filters', 'Make common application and enrollment reviews faster.', 'amber'],
+            ['6', 'Dark Mode', 'A calm dark workspace keeps long admin sessions comfortable.', 'teal'],
+          ].map(([number, title, text, color]) => (
+            <article className="admin-recommendation" key={title}>
+              <div className={`admin-recommendation-icon ${color}`}>{number}</div>
+              <h3>{title}</h3>
+              <p>{text}</p>
+              <CheckCircle2 size={14} aria-hidden="true" />
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="admin-other-suggestions" aria-label="Other suggestions">
+        <strong>Other Suggestions</strong>
+        {['Add breadcrumbs for deep navigation', 'Improve mobile responsiveness', 'Add export reports', 'Add role-based access indicators', 'Add tooltips for actions', 'Improve empty states'].map(suggestion => <span key={suggestion}>• {suggestion}</span>)}
+      </section>
     </div>
   )
 }
@@ -367,17 +477,58 @@ function AdminDashboard({ onNav }: { onNav: (k: string) => void }) {
 function AdminUsers({ toast, onViewApplications }: { toast: (m: string, t?: ToastType) => void; onViewApplications: (query: string) => void }) {
   const { data: users, loading, error, reload } = useAdminData(fetchUsers)
   const [q, setQ] = useState('')
+  const [statusFilter, setStatusFilter] = useState('ALL')
+  const [roleFilter, setRoleFilter] = useState('ALL')
+  const [programmeFilter, setProgrammeFilter] = useState('ALL')
+  const [openActions, setOpenActions] = useState<{ userId: string; top: number; left: number } | null>(null)
   const [showArchived, setShowArchived] = useState(false)
   const [editing, setEditing] = useState<Profile | null>(null)
   const [confirm, setConfirm] = useState<{ msg: string; fn: () => void } | null>(null)
 
   const isArchived = (u: Profile) => (u as { is_archived?: boolean }).is_archived === true
   const archivedCount = users.filter(isArchived).length
+  const programmes = Array.from(new Set(users.map(user => user.diploma).filter((value): value is string => Boolean(value)))).sort()
   const filtered = users
     .filter(u => isArchived(u) === showArchived)
+    .filter(u => statusFilter === 'ALL' || (u.request_status ?? 'PENDING') === statusFilter)
+    .filter(u => roleFilter === 'ALL' || u.role === roleFilter)
+    .filter(u => programmeFilter === 'ALL' || u.diploma === programmeFilter)
     .filter(u =>
       `${u.full_name} ${u.email} ${u.diploma ?? ''} ${u.identification_number ?? ''} ${u.residence ?? ''}`.toLowerCase().includes(q.toLowerCase())
     )
+
+  const openActionMenu = (event: React.MouseEvent<HTMLButtonElement>, userId: string) => {
+    const rect = event.currentTarget.getBoundingClientRect()
+    const menuWidth = 190
+    const menuHeight = 286
+    const gap = 8
+    const top = rect.bottom + menuHeight + gap <= window.innerHeight - 8
+      ? rect.bottom + gap
+      : rect.top - menuHeight - gap >= 8
+        ? rect.top - menuHeight - gap
+        : Math.max(8, Math.min(rect.bottom + gap, window.innerHeight - menuHeight - 8))
+    const left = Math.max(8, Math.min(rect.right - menuWidth, window.innerWidth - menuWidth - 8))
+    setOpenActions(current => current?.userId === userId ? null : { userId, top, left })
+  }
+
+  const actionUser = openActions ? users.find(user => user.id === openActions.userId) : null
+
+  useEffect(() => {
+    if (!openActions) return
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      const target = event.target as HTMLElement
+      if (!target.closest('.admin-action-menu-portal') && !target.closest('.admin-action-trigger')) setOpenActions(null)
+    }
+    const closeOnViewportChange = () => setOpenActions(null)
+    document.addEventListener('pointerdown', closeOnOutsidePointer)
+    window.addEventListener('resize', closeOnViewportChange)
+    window.addEventListener('scroll', closeOnViewportChange, true)
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutsidePointer)
+      window.removeEventListener('resize', closeOnViewportChange)
+      window.removeEventListener('scroll', closeOnViewportChange, true)
+    }
+  }, [openActions])
 
   async function saveEdit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -414,13 +565,23 @@ function AdminUsers({ toast, onViewApplications }: { toast: (m: string, t?: Toas
           {showArchived ? <UserCheck size={14} /> : <Archive size={14} />} {showArchived ? 'Show active students' : `Show archived (${archivedCount})`}
         </button>
       </div>
-      <div className="admin-card">
+      <div className="admin-card admin-students-card">
         <div className="admin-card-header">
-          <div className="admin-filter-bar">
+          <div className="admin-filter-bar admin-student-toolbar">
             <div className="admin-filter-search">
               <Search size={14} />
               <input placeholder="Search students…" value={q} onChange={e => setQ(e.target.value)} />
             </div>
+            <select className="admin-filter-select" aria-label="Filter by status" value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
+              <option value="ALL">All statuses</option><option value="PENDING">Pending</option><option value="APPROVED">Approved</option><option value="REJECTED">Rejected</option>
+            </select>
+            <select className="admin-filter-select" aria-label="Filter by role" value={roleFilter} onChange={e => setRoleFilter(e.target.value)}>
+              <option value="ALL">All roles</option><option value="STUDENT">Student</option><option value="ADMIN">Admin</option>
+            </select>
+            <select className="admin-filter-select" aria-label="Filter by programme" value={programmeFilter} onChange={e => setProgrammeFilter(e.target.value)}>
+              <option value="ALL">All programmes</option>{programmes.map(programme => <option key={programme} value={programme}>{programme}</option>)}
+            </select>
+            <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={reload} title="Refresh students"><RefreshCw size={13} /> Refresh</button>
           </div>
           <span style={{ color: '#3a6070', fontSize: 12 }}>{filtered.length} {showArchived ? 'archived' : 'students'}</span>
         </div>
@@ -428,86 +589,23 @@ function AdminUsers({ toast, onViewApplications }: { toast: (m: string, t?: Toas
           <div className="admin-table-wrap">
             <table className="admin-table">
               <thead><tr>
-                <th>Name</th><th>Email</th><th>Phone</th><th>Diploma</th><th>Age</th><th>Languages</th><th>ID</th><th>Residence</th><th>Request</th><th>Role</th><th>Joined</th><th>Actions</th>
+                <th>Student</th><th>Contact</th><th>Programme</th><th>Location</th><th>Status</th><th>Role</th><th>Date</th><th>Actions</th>
               </tr></thead>
               <tbody>
                 {filtered.length === 0 ? (
-                  <tr><td colSpan={12}><div className="admin-empty"><p>No users found.</p></div></td></tr>
+                  <tr><td colSpan={8}><div className="admin-empty"><p>No users found.</p></div></td></tr>
                 ) : filtered.map(u => (
                   <tr key={u.id}>
-                    <td><strong>{u.full_name}</strong></td>
-                    <td>{u.email}</td>
-                    <td>{u.phone ?? '—'}</td>
-                    <td>{u.diploma ?? '—'}</td>
-                    <td>{u.age ?? '—'}</td>
-                    <td>{u.languages ?? '—'}</td>
-                    <td>{u.identification_number ?? '—'}</td>
-                    <td>{u.residence ?? '—'}</td>
+                    <td><span className="admin-student-identity"><span className="admin-student-avatar">{u.full_name?.trim().split(/\s+/).map(name => name[0]).join('').slice(0, 2).toUpperCase() || '?'}</span><span><strong>{u.full_name}</strong><small>{u.email}</small></span></span></td>
+                    <td><span className="admin-table-secondary">{u.phone ?? 'No phone'}<small>{u.email}</small></span></td>
+                    <td><span className="admin-table-secondary">{u.diploma ?? 'Programme not set'}<small>{u.age ? `${u.age} years` : 'Age not set'}</small></span></td>
+                    <td><span className="admin-table-secondary">{u.residence ?? 'Location not set'}<small>{u.country ?? ''}</small></span></td>
                     <td><StatusBadge status={u.request_status ?? 'PENDING'} /></td>
                     <td><StatusBadge status={u.role} /></td>
                     <td>{fmtDate(u.created_at)}</td>
                     <td>
-                      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                        <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setEditing(u)}>
-                          <Pencil size={12} /> Edit
-                        </button>
-                        {u.role === 'STUDENT' && (
-                          <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => onViewApplications(u.email)}>
-                            <ClipboardList size={12} /> Applications
-                          </button>
-                        )}
-                        {u.role !== 'ADMIN' && (
-                          <button className="admin-btn admin-btn-success admin-btn-sm" onClick={() => setConfirm({
-                            msg: `Promote ${u.full_name} to ADMIN?`,
-                            fn: async () => { await updateUserRole(u.id, 'ADMIN'); toast('Role updated'); reload(); setConfirm(null) }
-                          })}>
-                            <UserCheck size={12} /> Make Admin
-                          </button>
-                        )}
-                        <button className="admin-btn admin-btn-success admin-btn-sm" onClick={() => setConfirm({
-                          msg: `Approve the account request for ${u.full_name}?`,
-                          fn: async () => { await updateUserProfile(u.id, { request_status: 'APPROVED' }); toast('Your request approved'); reload(); setConfirm(null) }
-                        })}>
-                          <CheckCheck size={12} /> Approve
-                        </button>
-                        <button className="admin-btn admin-btn-danger admin-btn-sm" onClick={() => setConfirm({
-                          msg: `Reject the account request for ${u.full_name}?`,
-                          fn: async () => { await updateUserProfile(u.id, { request_status: 'REJECTED' }); toast('Application rejected'); reload(); setConfirm(null) }
-                        })}>
-                          <XCircle size={12} /> Reject
-                        </button>
-                        {u.role === 'STUDENT' && (
-                          <>
-                            <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setConfirm({
-                              msg: isArchived(u)
-                                ? `Restore ${u.full_name} to the active student list?`
-                                : `Archive ${u.full_name}? The account and its records are kept safe — archived students are hidden from the active list and can be restored at any time.`,
-                              fn: async () => {
-                                try {
-                                  await updateStudentArchive(u.id, !isArchived(u), u.full_name)
-                                  toast(isArchived(u) ? 'Student restored' : 'Student archived')
-                                  reload()
-                                } catch (err: unknown) { toast(err instanceof Error ? err.message : 'Action failed', 'error') }
-                                setConfirm(null)
-                              }
-                            })}>
-                              {isArchived(u) ? <ArchiveRestore size={12} /> : <Archive size={12} />} {isArchived(u) ? 'Restore' : 'Archive'}
-                            </button>
-                            <button className="admin-btn admin-btn-danger admin-btn-sm" onClick={() => setConfirm({
-                              msg: `Permanently delete ${u.full_name}? This removes the student's profile and can affect their enrolments and other linked records. This cannot be undone. If you only need to take them out of the active list, archive the student instead.`,
-                              fn: async () => {
-                                try {
-                                  await deleteStudentProfile(u.id, u.full_name)
-                                  toast('Student deleted')
-                                  reload()
-                                } catch (err: unknown) { toast(err instanceof Error ? err.message : 'Delete failed', 'error') }
-                                setConfirm(null)
-                              }
-                            })}>
-                              <Trash2 size={12} /> Delete
-                            </button>
-                          </>
-                        )}
+                      <div className="admin-row-actions">
+                        <button className="admin-action-trigger" aria-label={`Actions for ${u.full_name}`} aria-expanded={openActions?.userId === u.id} onClick={event => openActionMenu(event, u.id)}><MoreVertical size={17} /></button>
                       </div>
                     </td>
                   </tr>
@@ -517,6 +615,19 @@ function AdminUsers({ toast, onViewApplications }: { toast: (m: string, t?: Toas
           </div>
         )}
       </div>
+
+      {actionUser && openActions && createPortal(
+        <div className="admin-action-menu admin-action-menu-portal" role="menu" style={{ top: openActions.top, left: openActions.left }}>
+          <button onClick={() => { setOpenActions(null); setEditing(actionUser) }}><Pencil size={13} /> Edit</button>
+          {actionUser.role === 'STUDENT' && <button onClick={() => { setOpenActions(null); onViewApplications(actionUser.email) }}><ClipboardList size={13} /> View Applications</button>}
+          {actionUser.role !== 'ADMIN' && <button onClick={() => { setOpenActions(null); setConfirm({ msg: `Promote ${actionUser.full_name} to ADMIN?`, fn: async () => { await updateUserRole(actionUser.id, 'ADMIN'); toast('Role updated'); reload(); setConfirm(null) } }) }}><UserCheck size={13} /> Make Admin</button>}
+          {actionUser.request_status !== 'APPROVED' && <button onClick={() => { setOpenActions(null); setConfirm({ msg: `Approve the account request for ${actionUser.full_name}?`, fn: async () => { await updateUserProfile(actionUser.id, { request_status: 'APPROVED' }); toast('Your request approved'); reload(); setConfirm(null) } }) }}><CheckCheck size={13} /> Approve</button>}
+          {actionUser.request_status !== 'REJECTED' && <button className="danger" onClick={() => { setOpenActions(null); setConfirm({ msg: `Reject the account request for ${actionUser.full_name}?`, fn: async () => { await updateUserProfile(actionUser.id, { request_status: 'REJECTED' }); toast('Application rejected'); reload(); setConfirm(null) } }) }}><XCircle size={13} /> Reject</button>}
+          {actionUser.role === 'STUDENT' && <button onClick={() => { setOpenActions(null); setConfirm({ msg: isArchived(actionUser) ? `Restore ${actionUser.full_name} to the active student list?` : `Archive ${actionUser.full_name}? The account and its records are kept safe — archived students are hidden from the active list and can be restored at any time.`, fn: async () => { try { await updateStudentArchive(actionUser.id, !isArchived(actionUser), actionUser.full_name); toast(isArchived(actionUser) ? 'Student restored' : 'Student archived'); reload() } catch (err: unknown) { toast(err instanceof Error ? err.message : 'Action failed', 'error') } setConfirm(null) } }) }}>{isArchived(actionUser) ? <ArchiveRestore size={13} /> : <Archive size={13} />} {isArchived(actionUser) ? 'Restore' : 'Archive'}</button>}
+          {actionUser.role === 'STUDENT' && <button className="danger" onClick={() => { setOpenActions(null); setConfirm({ msg: `Permanently delete ${actionUser.full_name}? This removes the student's profile and can affect their enrolments and other linked records. This cannot be undone. If you only need to take them out of the active list, archive the student instead.`, fn: async () => { try { await deleteStudentProfile(actionUser.id, actionUser.full_name); toast('Student deleted'); reload() } catch (err: unknown) { toast(err instanceof Error ? err.message : 'Delete failed', 'error') } setConfirm(null) } }) }}><Trash2 size={13} /> Delete</button>}
+        </div>,
+        document.body
+      )}
 
       {editing && (
         <div className="admin-modal-overlay" onClick={() => setEditing(null)}>
@@ -1829,6 +1940,7 @@ export default function Admin() {
   const [activeSection, setActiveSection] = useState('dashboard')
   const [applicationsQuery, setApplicationsQuery] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [globalSearch, setGlobalSearch] = useState('')
   const [unreadCount, setUnreadCount] = useState(0)
   const { toasts, show: showToast } = useToast()
@@ -1876,7 +1988,7 @@ export default function Admin() {
   }
 
   const sections: Record<string, React.ReactNode> = {
-    dashboard: <AdminDashboard onNav={navTo} />,
+    dashboard: <AdminDashboard onNav={navTo} profile={profile} />,
     users: <AdminUsers toast={showToast} onViewApplications={query => { setApplicationsQuery(query); navTo('applications') }} />,
     applications: <AdminApplications toast={showToast} initialQuery={applicationsQuery} />,
     documents: <AdminDocuments toast={showToast} />,
@@ -1914,7 +2026,7 @@ export default function Admin() {
       {sidebarOpen && <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.5)', zIndex: 99 }} onClick={() => setSidebarOpen(false)} />}
 
       {/* Sidebar */}
-      <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
+      <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''} ${sidebarCollapsed ? 'is-collapsed' : ''}`}>
         <div className="admin-sidebar-brand">
           <Link to="/" className="brand" style={{ color: '#fff', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
             {brand.logoUrl
@@ -1944,6 +2056,9 @@ export default function Admin() {
           ))}
         </nav>
         <div className="admin-sidebar-footer">
+          <button className="admin-collapse-btn" onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
+            <ChevronLeft size={16} /><span>Collapse Menu</span>
+          </button>
           <button className="admin-logout-btn" onClick={handleLogout}>
             <LogOut size={16} /><span>Sign Out</span>
           </button>
@@ -1951,13 +2066,16 @@ export default function Admin() {
       </aside>
 
       {/* Main */}
-      <div className="admin-main">
+      <div className={`admin-main ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
         {/* Topbar */}
         <header className="admin-topbar">
           <button className="admin-menu-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
             <Menu size={18} />
           </button>
           <span className="admin-topbar-title">{currentLabel}</span>
+          <nav className="admin-public-nav" aria-label="Public site navigation">
+            {[['Home', '/'], ['Home Care', '/home-care'], ['Courses', '/courses'], ['Admissions', '/admissions'], ['Enroll', '/admissions/apply'], ['Careers', '/careers'], ['About', '/about'], ['News', '/news'], ['Contact', '/contact']].map(([label, path]) => <Link key={path} to={path}>{label}</Link>)}
+          </nav>
           <div className="admin-search" style={{ flex: 1, maxWidth: 320, position: 'relative' }}>
             <Search size={14} />
             <input
@@ -1985,6 +2103,7 @@ export default function Admin() {
             )}
           </div>
           <div className="admin-topbar-actions">
+            <ThemeToggle />
             <button className="admin-icon-btn" onClick={() => navTo('notifications')} title="Notifications" style={{ position: 'relative' }}>
               <Bell size={16} />
               {unreadCount > 0 && <span className="admin-notif-badge" />}
